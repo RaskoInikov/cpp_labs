@@ -1,75 +1,59 @@
 #include <iostream>
-
-// include headers (they include your String via relative path)
-#include "../headers/Clock.h"
-#include "../headers/MechanicalClock.h"
-#include "../headers/ElectronicClock.h"
 #include "../headers/WristClock.h"
-#include "../headers/WallClock.h"
 #include "../headers/SmartClock.h"
+#include "../headers/WallClock.h"
+
+/*
+  Demonstration in English as requested.
+
+  The program will demonstrate:
+  - input and output (operator>> / operator<<) for WristClock and SmartClock (these combine many parent fields),
+  - copy-construction and assignment,
+  - getters and setters usage.
+
+  You will be prompted to enter several lines. Use plain text lines for String fields (brand, model, ...).
+  For integer fields, enter a number on its own line (e.g. 2020).
+*/
 
 int main()
 {
-    // All comments and interactions in English as requested.
+    std::cout << "Demo: create a WristClock (mechanical, inherits Clock->MechanicalClock->WristClock)\n";
+    WristClock wc;
+    std::cin >> wc; // reads Brand, Model, Year, Winding interval, Strap length
+    std::cout << "\nYou entered WristClock:\n";
+    std::cout << wc << std::endl;
 
-    std::cout << "=== Demo: Clock class hierarchy ===\n\n";
+    // copy construct
+    WristClock wcCopy(wc);
+    std::cout << "Copy-constructed WristClock:\n"
+              << wcCopy << std::endl;
 
-    // 1) Base Clock
-    // Clock base;
-    // std::cout << "Input base Clock data:\n";
-    // std::cin >> base;
-    // std::cout << "\nBase Clock data:\n"
-    //           << base << std::endl;
-    // base.start();
+    // modify via setters and demonstrate getters
+    wcCopy.setStrapLength(wcCopy.getStrapLength() + 5);
+    std::cout << "After increasing strap length by 5 mm:\n"
+              << wcCopy << std::endl;
 
-    // 2) MechanicalClock
-    MechanicalClock mech;
-    std::cout << "\nInput MechanicalClock data:\n";
-    std::cin >> mech;
-    std::cout << "\nMechanicalClock data:\n"
-              << mech << std::endl;
-    // mech.start();
+    std::cout << "\nDemo: create a SmartClock (electronic -> smart)\n";
+    SmartClock sc;
+    std::cin >> sc; // reads Brand, Model, Year, Battery life, OS version
+    std::cout << "\nYou entered SmartClock:\n";
+    std::cout << sc << std::endl;
 
-    // // 3) ElectronicClock
-    // ElectronicClock elec;
-    // std::cout << "\nInput ElectronicClock data:\n";
-    // std::cin >> elec;
-    // std::cout << "\nElectronicClock data:\n"
-    //           << elec << std::endl;
-    // elec.start();
-    // elec.addFirmwareNote(String("v1.0 release notes"));
+    // assignment
+    SmartClock scAssigned;
+    scAssigned = sc;
+    std::cout << "Assigned SmartClock (copy via operator=):\n"
+              << scAssigned << std::endl;
 
-    // // 4) WristClock (child of MechanicalClock)
-    // WristClock wrist(String("Omega"), String("Speedy"), 2020, String("Manual"), 48, String("Leather"));
-    // std::cout << "\nWristClock initial:\n"
-    //           << wrist << std::endl;
-    // wrist.wear();
-    // wrist.addMaintenanceRecord(String("Polished case"));
+    // small demonstration of setters/getters
+    scAssigned.setOsVersion(String("v2.0"));
+    std::cout << "After setting OS version to v2.0:\n"
+              << scAssigned << std::endl;
 
-    // // 5) WallClock (child of MechanicalClock)
-    // WallClock wall(String("Seiko"), String("WallMaster"), 2018, String("Pendulum"), 0, 300);
-    // std::cout << "\nWallClock initial:\n"
-    //           << wall << std::endl;
-    // wall.hangOnWall();
+    // Optionally demonstrate WallClock which shares MechanicalClock (uncomment if desired)
+    // WallClock wall;
+    // std::cin >> wall;
+    // std::cout << wall << std::endl;
 
-    // // 6) SmartClock (child of ElectronicClock)
-    // SmartClock smart(String("FitTime"), String("X100"), 2022, String("OLED"), 72);
-    // std::cout << "\nSmartClock initial:\n"
-    //           << smart << std::endl;
-    // smart.installApp(String("Weather"));
-    // smart.installApp(String("Music"));
-    // std::cout << "\nSmartClock after installing apps:\n"
-    //           << smart << std::endl;
-
-    // // Demonstrate copy constructors
-    // WristClock wristCopy = wrist;
-    // std::cout << "\nCopied WristClock:\n"
-    //           << wristCopy << std::endl;
-
-    // SmartClock smartCopy = smart;
-    // std::cout << "\nCopied SmartClock:\n"
-    //           << smartCopy << std::endl;
-
-    std::cout << "\n=== End of demo ===\n";
     return 0;
 }

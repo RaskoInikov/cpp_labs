@@ -8,7 +8,7 @@
 class ElectronicClock : virtual public Clock
 {
 private:
-    int batteryLife; // hours of battery life
+    int batteryLife;
 
 public:
     ElectronicClock();
@@ -18,13 +18,8 @@ public:
 
     ElectronicClock &operator=(const ElectronicClock &other);
 
-    // getters / setters
     int getBatteryLife() const;
     void setBatteryLife(int hours);
-
-    // override serialization/deserialization
-    void serialize(std::ostream &os) const override;
-    void deserialize(std::istream &is) override;
 
     friend std::ostream &operator<<(std::ostream &os, const ElectronicClock &ec);
     friend std::istream &operator>>(std::istream &is, ElectronicClock &ec);

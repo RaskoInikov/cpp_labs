@@ -8,7 +8,7 @@
 class MechanicalClock : virtual public Clock
 {
 private:
-    int windingInterval; // days between windings
+    int windingInterval;
 
 public:
     MechanicalClock();
@@ -18,13 +18,8 @@ public:
 
     MechanicalClock &operator=(const MechanicalClock &other);
 
-    // getters / setters
     int getWindingInterval() const;
     void setWindingInterval(int days);
-
-    // override serialization/deserialization
-    void serialize(std::ostream &os) const override;
-    void deserialize(std::istream &is) override;
 
     friend std::ostream &operator<<(std::ostream &os, const MechanicalClock &mc);
     friend std::istream &operator>>(std::istream &is, MechanicalClock &mc);

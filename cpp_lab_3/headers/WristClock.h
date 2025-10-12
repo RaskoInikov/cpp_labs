@@ -8,7 +8,7 @@
 class WristClock : public MechanicalClock
 {
 private:
-    int strapLength; // mm
+    int strapLength;
 
 public:
     WristClock();
@@ -18,13 +18,8 @@ public:
 
     WristClock &operator=(const WristClock &other);
 
-    // getters / setters
     int getStrapLength() const;
     void setStrapLength(int mm);
-
-    // override serialization/deserialization
-    void serialize(std::ostream &os) const override;
-    void deserialize(std::istream &is) override;
 
     friend std::ostream &operator<<(std::ostream &os, const WristClock &wc);
     friend std::istream &operator>>(std::istream &is, WristClock &wc);

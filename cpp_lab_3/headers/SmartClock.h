@@ -8,7 +8,7 @@
 class SmartClock : public ElectronicClock
 {
 private:
-    String osVersion; // single String field representing installed OS/version
+    String osVersion;
 
 public:
     SmartClock();
@@ -18,13 +18,8 @@ public:
 
     SmartClock &operator=(const SmartClock &other);
 
-    // getters / setters
     String getOsVersion() const;
     void setOsVersion(const String &v);
-
-    // override serialization/deserialization
-    void serialize(std::ostream &os) const override;
-    void deserialize(std::istream &is) override;
 
     friend std::ostream &operator<<(std::ostream &os, const SmartClock &sc);
     friend std::istream &operator>>(std::istream &is, SmartClock &sc);

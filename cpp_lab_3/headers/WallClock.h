@@ -8,7 +8,7 @@
 class WallClock : public MechanicalClock
 {
 private:
-    int diameter; // mm
+    int diameter;
 
 public:
     WallClock();
@@ -18,13 +18,8 @@ public:
 
     WallClock &operator=(const WallClock &other);
 
-    // getters / setters
     int getDiameter() const;
     void setDiameter(int mm);
-
-    // override serialization/deserialization
-    void serialize(std::ostream &os) const override;
-    void deserialize(std::istream &is) override;
 
     friend std::ostream &operator<<(std::ostream &os, const WallClock &wc);
     friend std::istream &operator>>(std::istream &is, WallClock &wc);
