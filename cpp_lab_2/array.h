@@ -1,34 +1,29 @@
 #ifndef ARRAY_H
 #define ARRAY_H
 
-#include <iostream>
+class Array
+{
+private:
+    int *data;
+    int size;
 
-class Array {
-    int *arr;
-    int length;
-
-  public:
+public:
     Array();
-    Array(int length);
+    Array(int n);
     Array(const Array &other);
     Array &operator=(const Array &other);
     ~Array();
 
-    int get_length();
-    void set_length(int length);
-    void sort();
-    bool isEmpty();
+    bool contains(int value) const;
+    bool contains(int value, int upto) const;
+    bool is_empty() const;
+    void input();
+    void display() const;
 
-    bool contains(int value);
-
-    Array get_intersection(Array &b);
-    Array get_union(Array &b);
-
-    friend std::ostream &operator<<(std::ostream &os, const Array &arr);
-    friend std::istream &operator>>(std::istream &is, Array &arr);
-
-  private:
-    void quick_sort(int low, int high);
+    Array unique() const;
+    Array merge(const Array &arr2) const;
+    Array intersection(const Array &arr2);
+    Array unionArrays(const Array &arr2);
 };
 
 #endif
