@@ -21,6 +21,8 @@ public:
     int getBatteryLife() const;
     void setBatteryLife(int hours);
 
+    virtual void displayHeader() const override;
+
     friend std::ostream &operator<<(std::ostream &os, const ElectronicClock &ec);
     friend std::istream &operator>>(std::istream &is, ElectronicClock &ec);
 };

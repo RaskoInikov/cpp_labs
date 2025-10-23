@@ -31,7 +31,14 @@ String::String(const String &other) : length(other.length)
 
 String::~String() { delete[] data; }
 
-String String::operator+(const String &other)
+String::String(String &&other) noexcept
+    : data(other.data), length(other.length)
+{
+    other.data = nullptr;
+    other.length = 0;
+}
+
+String String::operator+(const String &other) const
 {
     String res;
     res.length = length + other.length;
@@ -39,6 +46,34 @@ String String::operator+(const String &other)
     strcpy(res.data, data);
     strcat(res.data, other.data);
     return res;
+}
+
+String String::operator+(const char *other) const
+{
+    // if (!other)
+    //     return *this;
+    // String res;
+    // unsigned int otherLen = strlen(other);
+    // res.length = length + otherLen;
+    // res.data = new char[res.length + 1];
+    // strcpy(res.data, data);
+    // strcat(res.data, other);
+    // return res;
+    return *this + String(other);
+}
+
+String operator+(const char *lhs, const String &rhs)
+{
+    // if (!lhs)
+    //     return rhs;
+    // unsigned int lhsLen = strlen(lhs);
+    // String res;
+    // res.length = lhsLen + rhs.length;
+    // res.data = new char[res.length + 1];
+    // strcpy(res.data, lhs);
+    // strcat(res.data, rhs.data);
+    // return res;
+    return String(lhs) + rhs;
 }
 
 String &String::operator+=(const String &other)
@@ -55,6 +90,20 @@ String &String::operator=(const String &other)
     length = other.length;
     data = new char[length + 1];
     strcpy(data, other.data);
+    return *this;
+}
+
+String &String::operator=(String &&other) noexcept
+{
+    if (this != &other)
+    {
+        delete[] data;
+        data = other.data;
+        length = other.length;
+
+        other.data = nullptr;
+        other.length = 0;
+    }
     return *this;
 }
 
@@ -91,43 +140,12 @@ std::ostream &operator<<(std::ostream &os, const String &s)
     return os;
 }
 
-// std::istream &operator>>(std::istream &in, String &s)
-// {
-//     // char buffer[80];
-//     // in.getline(buffer, 80);
-
-//     // delete[] str.data;
-
-//     // str.length = strlen(buffer);
-//     // str.data = new char[str.length + 1];
-//     // strcpy(str.data, buffer);
-
-//     // return in;
-//     const size_t BUFFER_SIZE = 80;
-//     char buffer[BUFFER_SIZE];
-
-//     in >> buffer;
-
-//     unsigned int new_length = std::strlen(buffer);
-//     // if (new_length + 1 > s.capacity)
-//     // {
-//     //     delete[] s.data;
-//     //     s.capacity = new_length + 1;
-//     //     s.data = new char[s.capacity];
-//     // }
-
-//     s.length = new_length;
-//     std::strcpy(s.data, buffer);
-
-//     return in;
-// }
-
 std::istream &operator>>(std::istream &is, String &obj)
 {
     if (obj.data != nullptr)
         delete[] obj.data;
 
-    const int BUFFER_SIZE = 256;
+    const int BUFFER_SIZE = 80;
     char buffer[BUFFER_SIZE];
 
     is.getline(buffer, BUFFER_SIZE);

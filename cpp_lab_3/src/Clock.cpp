@@ -1,6 +1,7 @@
 #include "../headers/Clock.h"
 #include "../utils/string_utils.h"
 #include <iostream>
+#include <iomanip>
 
 Clock::Clock() : brand(), model(), year(0) {}
 Clock::Clock(const String &brand_, const String &model_, int year_) : brand(brand_), model(model_), year(year_) {}
@@ -24,11 +25,30 @@ void Clock::setModel(const String &m) { model = m; }
 int Clock::getYear() const { return year; }
 void Clock::setYear(int y) { year = y; }
 
+void Clock::displayHeader() const
+{
+    std::cout << std::left
+              << std::setw(15) << "Brand"
+              << std::setw(15) << "Model"
+              << std::setw(8) << "Year"
+              << std::setw(15) << "Battery Life"
+              << std::setw(18) << "Winding Interval"
+              << std::setw(15) << "OS Version"
+              << std::setw(12) << "Diameter"
+              << std::setw(15) << "Strap Length" << std::endl;
+}
+
 std::ostream &operator<<(std::ostream &os, const Clock &c)
 {
-    os << "Brand: " << c.brand << '\n';
-    os << "Model: " << c.model << '\n';
-    os << "Year: " << c.year << '\n';
+    os << std::left
+       << std::setw(15) << c.getBrand()
+       << std::setw(15) << c.getModel()
+       << std::setw(8) << c.getYear()
+       << std::setw(15) << "-"
+       << std::setw(18) << "-"
+       << std::setw(15) << "-"
+       << std::setw(12) << "-"
+       << std::setw(15) << "-";
     return os;
 }
 

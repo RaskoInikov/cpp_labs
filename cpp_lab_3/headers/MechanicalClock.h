@@ -21,6 +21,8 @@ public:
     int getWindingInterval() const;
     void setWindingInterval(int days);
 
+    virtual void displayHeader() const override;
+
     friend std::ostream &operator<<(std::ostream &os, const MechanicalClock &mc);
     friend std::istream &operator>>(std::istream &is, MechanicalClock &mc);
 };

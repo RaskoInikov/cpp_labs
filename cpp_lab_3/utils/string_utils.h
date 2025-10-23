@@ -4,5 +4,6 @@
 #include "../../string/string.h"
 
 int stringToInt(const String &s);
+void clearInputBuffer();
 
 #endif

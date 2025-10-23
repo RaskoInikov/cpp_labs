@@ -21,6 +21,8 @@ public:
     int getDiameter() const;
     void setDiameter(int mm);
 
+    virtual void displayHeader() const override;
+
     friend std::ostream &operator<<(std::ostream &os, const WallClock &wc);
     friend std::istream &operator>>(std::istream &is, WallClock &wc);
 };

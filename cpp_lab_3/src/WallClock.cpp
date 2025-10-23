@@ -1,6 +1,7 @@
 #include "../headers/WallClock.h"
 #include "../utils/string_utils.h"
 #include <iostream>
+#include <iomanip>
 
 WallClock::WallClock() : MechanicalClock(), diameter(0) {}
 WallClock::WallClock(const String &brand, const String &model, int year, int windingInterval, int diameter)
@@ -20,10 +21,19 @@ WallClock &WallClock::operator=(const WallClock &other)
 int WallClock::getDiameter() const { return diameter; }
 void WallClock::setDiameter(int mm) { diameter = mm; }
 
+void WallClock::displayHeader() const { Clock::displayHeader(); }
+
 std::ostream &operator<<(std::ostream &os, const WallClock &wc)
 {
-    os << static_cast<const MechanicalClock &>(wc);
-    os << "Diameter (mm): " << wc.diameter << '\n';
+    os << std::left
+       << std::setw(15) << wc.getBrand()
+       << std::setw(15) << wc.getModel()
+       << std::setw(8) << wc.getYear()
+       << std::setw(15) << "-"
+       << std::setw(18) << wc.getWindingInterval()
+       << std::setw(15) << "-"
+       << std::setw(12) << wc.getDiameter()
+       << std::setw(15) << "-";
     return os;
 }
 

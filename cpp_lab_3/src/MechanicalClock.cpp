@@ -1,6 +1,7 @@
 #include "../headers/MechanicalClock.h"
 #include "../utils/string_utils.h"
 #include <iostream>
+#include <iomanip>
 
 MechanicalClock::MechanicalClock() : Clock(), windingInterval(0) {}
 MechanicalClock::MechanicalClock(const String &brand, const String &model, int year, int windingInterval)
@@ -20,10 +21,19 @@ MechanicalClock &MechanicalClock::operator=(const MechanicalClock &other)
 int MechanicalClock::getWindingInterval() const { return windingInterval; }
 void MechanicalClock::setWindingInterval(int days) { windingInterval = days; }
 
+void MechanicalClock::displayHeader() const { Clock::displayHeader(); }
+
 std::ostream &operator<<(std::ostream &os, const MechanicalClock &mc)
 {
-    os << static_cast<const Clock &>(mc);
-    os << "Winding interval (days): " << mc.windingInterval << '\n';
+    os << std::left
+       << std::setw(15) << mc.getBrand()
+       << std::setw(15) << mc.getModel()
+       << std::setw(8) << mc.getYear()
+       << std::setw(15) << "-"
+       << std::setw(18) << mc.getWindingInterval()
+       << std::setw(15) << "-"
+       << std::setw(12) << "-"
+       << std::setw(15) << "-";
     return os;
 }
 

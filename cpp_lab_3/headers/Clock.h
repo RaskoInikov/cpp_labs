@@ -26,6 +26,8 @@ public:
     int getYear() const;
     void setYear(int y);
 
+    virtual void displayHeader() const;
+
     friend std::ostream &operator<<(std::ostream &os, const Clock &c);
     friend std::istream &operator>>(std::istream &is, Clock &c);
 };

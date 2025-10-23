@@ -1,6 +1,7 @@
 #include "../headers/ElectronicClock.h"
 #include "../utils/string_utils.h"
 #include <iostream>
+#include <iomanip>
 
 ElectronicClock::ElectronicClock() : Clock(), batteryLife(0) {}
 ElectronicClock::ElectronicClock(const String &brand, const String &model, int year, int batteryLife)
@@ -20,10 +21,19 @@ ElectronicClock &ElectronicClock::operator=(const ElectronicClock &other)
 int ElectronicClock::getBatteryLife() const { return batteryLife; }
 void ElectronicClock::setBatteryLife(int hours) { batteryLife = hours; }
 
+void ElectronicClock::displayHeader() const { Clock::displayHeader(); }
+
 std::ostream &operator<<(std::ostream &os, const ElectronicClock &ec)
 {
-    os << static_cast<const Clock &>(ec);
-    os << "Battery life (hours): " << ec.batteryLife << '\n';
+    os << std::left
+       << std::setw(15) << ec.getBrand()
+       << std::setw(15) << ec.getModel()
+       << std::setw(8) << ec.getYear()
+       << std::setw(15) << ec.getBatteryLife()
+       << std::setw(18) << "-"
+       << std::setw(15) << "-"
+       << std::setw(12) << "-"
+       << std::setw(15) << "-";
     return os;
 }
 

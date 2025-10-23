@@ -1,4 +1,9 @@
 #include "string_utils.h"
+#include <limits>
+#include <iostream>
+#include <iomanip>
+
+using namespace std;
 
 int stringToInt(const String &s)
 {
@@ -22,4 +27,9 @@ int stringToInt(const String &s)
             break;
     }
     return neg ? -res : res;
+}
+
+void clearInputBuffer()
+{
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }

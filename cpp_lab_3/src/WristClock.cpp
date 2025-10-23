@@ -1,6 +1,7 @@
 #include "../headers/WristClock.h"
 #include "../utils/string_utils.h"
 #include <iostream>
+#include <iomanip>
 
 WristClock::WristClock() : MechanicalClock(), strapLength(0) {}
 WristClock::WristClock(const String &brand, const String &model, int year, int windingInterval, int strapLength)
@@ -20,10 +21,19 @@ WristClock &WristClock::operator=(const WristClock &other)
 int WristClock::getStrapLength() const { return strapLength; }
 void WristClock::setStrapLength(int mm) { strapLength = mm; }
 
+void WristClock::displayHeader() const { Clock::displayHeader(); }
+
 std::ostream &operator<<(std::ostream &os, const WristClock &wc)
 {
-    os << static_cast<const MechanicalClock &>(wc);
-    os << "Strap length (mm): " << wc.strapLength << '\n';
+    os << std::left
+       << std::setw(15) << wc.getBrand()
+       << std::setw(15) << wc.getModel()
+       << std::setw(8) << wc.getYear()
+       << std::setw(15) << "-"
+       << std::setw(18) << wc.getWindingInterval()
+       << std::setw(15) << "-"
+       << std::setw(12) << "-"
+       << std::setw(15) << wc.getStrapLength();
     return os;
 }
 

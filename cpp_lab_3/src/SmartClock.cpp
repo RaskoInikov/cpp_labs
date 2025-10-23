@@ -1,6 +1,7 @@
 #include "../headers/SmartClock.h"
 #include "../utils/string_utils.h"
 #include <iostream>
+#include <iomanip>
 
 SmartClock::SmartClock() : ElectronicClock(), osVersion() {}
 SmartClock::SmartClock(const String &brand, const String &model, int year, int batteryLife, const String &osVersion)
@@ -20,10 +21,19 @@ SmartClock &SmartClock::operator=(const SmartClock &other)
 String SmartClock::getOsVersion() const { return osVersion; }
 void SmartClock::setOsVersion(const String &v) { osVersion = v; }
 
+void SmartClock::displayHeader() const { Clock::displayHeader(); }
+
 std::ostream &operator<<(std::ostream &os, const SmartClock &sc)
 {
-    os << static_cast<const ElectronicClock &>(sc);
-    os << "OS Version: " << sc.osVersion << '\n';
+    os << std::left
+       << std::setw(15) << sc.getBrand()
+       << std::setw(15) << sc.getModel()
+       << std::setw(8) << sc.getYear()
+       << std::setw(15) << sc.getBatteryLife()
+       << std::setw(18) << "-"
+       << std::setw(15) << sc.getOsVersion()
+       << std::setw(12) << "-"
+       << std::setw(15) << "-";
     return os;
 }
 

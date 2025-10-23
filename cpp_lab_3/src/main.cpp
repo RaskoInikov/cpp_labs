@@ -1,59 +1,150 @@
 #include <iostream>
-#include "../headers/WristClock.h"
+#include <iomanip>
+#include "../headers/Clock.h"
+#include "../headers/ElectronicClock.h"
+#include "../headers/MechanicalClock.h"
 #include "../headers/SmartClock.h"
 #include "../headers/WallClock.h"
+#include "../headers/WristClock.h"
+#include "../utils/string_utils.h"
 
-/*
-  Demonstration in English as requested.
-
-  The program will demonstrate:
-  - input and output (operator>> / operator<<) for WristClock and SmartClock (these combine many parent fields),
-  - copy-construction and assignment,
-  - getters and setters usage.
-
-  You will be prompted to enter several lines. Use plain text lines for String fields (brand, model, ...).
-  For integer fields, enter a number on its own line (e.g. 2020).
-*/
+using namespace std;
 
 int main()
 {
-    std::cout << "Demo: create a WristClock (mechanical, inherits Clock->MechanicalClock->WristClock)\n";
-    WristClock wc;
-    std::cin >> wc; // reads Brand, Model, Year, Winding interval, Strap length
-    std::cout << "\nYou entered WristClock:\n";
-    std::cout << wc << std::endl;
+  cout << "=== CLASS Clock ===" << endl;
+  int size;
+  cout << "Enter array size: ";
+  cin >> size;
+  clearInputBuffer();
 
-    // copy construct
-    WristClock wcCopy(wc);
-    std::cout << "Copy-constructed WristClock:\n"
-              << wcCopy << std::endl;
+  Clock *clocks = new Clock[size];
+  cout << "\n--- Input data ---" << endl;
+  for (int i = 0; i < size; i++)
+  {
+    cout << "Clock " << i + 1 << ":" << endl;
+    cin >> clocks[i];
+  }
 
-    // modify via setters and demonstrate getters
-    wcCopy.setStrapLength(wcCopy.getStrapLength() + 5);
-    std::cout << "After increasing strap length by 5 mm:\n"
-              << wcCopy << std::endl;
+  cout << "\n--- Clock Table ---" << endl;
+  clocks[0].displayHeader();
+  for (int i = 0; i < size; i++)
+    cout << clocks[i] << endl;
 
-    std::cout << "\nDemo: create a SmartClock (electronic -> smart)\n";
-    SmartClock sc;
-    std::cin >> sc; // reads Brand, Model, Year, Battery life, OS version
-    std::cout << "\nYou entered SmartClock:\n";
-    std::cout << sc << std::endl;
+  cout << "\n=== CLASS ElectronicClock ===" << endl;
+  cout << "Enter array size: ";
+  cin >> size;
+  clearInputBuffer();
 
-    // assignment
-    SmartClock scAssigned;
-    scAssigned = sc;
-    std::cout << "Assigned SmartClock (copy via operator=):\n"
-              << scAssigned << std::endl;
+  ElectronicClock *electronic = new ElectronicClock[size];
+  cout << "\n--- Input data ---" << endl;
+  for (int i = 0; i < size; i++)
+  {
+    cout << "ElectronicClock " << i + 1 << ":" << endl;
+    cin >> electronic[i];
+  }
 
-    // small demonstration of setters/getters
-    scAssigned.setOsVersion(String("v2.0"));
-    std::cout << "After setting OS version to v2.0:\n"
-              << scAssigned << std::endl;
+  cout << "\n--- ElectronicClock Table ---" << endl;
+  electronic[0].displayHeader();
+  for (int i = 0; i < size; i++)
+    cout << electronic[i] << endl;
 
-    // Optionally demonstrate WallClock which shares MechanicalClock (uncomment if desired)
-    // WallClock wall;
-    // std::cin >> wall;
-    // std::cout << wall << std::endl;
+  WallClock *wallClocks = new WallClock[size];
+  cout << "\n--- Input data for WallClocks ---" << endl;
+  for (int i = 0; i < size; i++)
+  {
+    cout << "WallClock " << i + 1 << ":" << endl;
+    cin >> wallClocks[i];
+  }
 
-    return 0;
+  cout << "\n--- WallClock Table ---" << endl;
+  wallClocks[0].displayHeader();
+  for (int i = 0; i < size; i++)
+    cout << wallClocks[i] << endl;
+
+  cout << "\n=== CLASS MechanicalClock (WristClock) ===" << endl;
+  cout << "Enter array size for WristClocks: ";
+  cin >> size;
+  clearInputBuffer();
+
+  WristClock *wristClocks = new WristClock[size];
+  cout << "\n--- Input data for WristClocks ---" << endl;
+  for (int i = 0; i < size; i++)
+  {
+    cout << "WristClock " << i + 1 << ":" << endl;
+    cin >> wristClocks[i];
+  }
+
+  cout << "\n--- WristClock Table ---" << endl;
+  wristClocks[0].displayHeader();
+  for (int i = 0; i < size; i++)
+    cout << wristClocks[i] << endl;
+
+  cout << "\n=== Demonstration: SmartClock Editing ===" << endl;
+  SmartClock smart(String("Apple"), String("Watch 9"), 2024, 18, String("watchOS 11"));
+  cout << "\nInitial SmartClock:" << endl;
+  smart.displayHeader();
+  cout << smart << endl;
+
+  int choice = -1;
+  while (choice != 0)
+  {
+    cout << "\n--- SmartClock Menu ---" << endl;
+    cout << "1. Change Brand" << endl;
+    cout << "2. Change Model" << endl;
+    cout << "3. Change Year" << endl;
+    cout << "4. Change Battery Life" << endl;
+    cout << "5. Change OS Version" << endl;
+    cout << "0. Exit editing" << endl;
+    cout << "Enter choice: ";
+    cin >> choice;
+    clearInputBuffer();
+
+    if (choice == 0)
+      break;
+
+    String s;
+    int val;
+
+    switch (choice)
+    {
+    case 1:
+      cout << "Enter new brand: ";
+      cin >> s;
+      smart.setBrand(s);
+      break;
+    case 2:
+      cout << "Enter new model: ";
+      cin >> s;
+      smart.setModel(s);
+      break;
+    case 3:
+      cout << "Enter new year: ";
+      cin >> val;
+      smart.setYear(val);
+      break;
+    case 4:
+      cout << "Enter new battery life (hours): ";
+      cin >> val;
+      smart.setBatteryLife(val);
+      break;
+    case 5:
+      cout << "Enter new OS version: ";
+      cin >> s;
+      smart.setOsVersion(s);
+      break;
+    default:
+      cout << "Invalid choice." << endl;
+    }
+
+    cout << "\nUpdated SmartClock:" << endl;
+    smart.displayHeader();
+    cout << smart << endl;
+  }
+
+  delete[] clocks;
+  delete[] electronic;
+
+  cout << "\nProgram terminated." << endl;
+  return 0;
 }

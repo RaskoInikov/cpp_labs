@@ -21,6 +21,8 @@ public:
     int getStrapLength() const;
     void setStrapLength(int mm);
 
+    virtual void displayHeader() const override;
+
     friend std::ostream &operator<<(std::ostream &os, const WristClock &wc);
     friend std::istream &operator>>(std::istream &is, WristClock &wc);
 };
