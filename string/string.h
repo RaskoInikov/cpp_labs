@@ -12,11 +12,9 @@ public:
   String();
   explicit String(const char *);
   String(const String &other);
-  String(String &&other) noexcept;
   ~String();
 
   String &operator=(const String &other);
-  String &operator=(String &&other) noexcept;
 
   String operator+(const String &other) const;
   String operator+(const char *other) const;
@@ -31,6 +29,12 @@ public:
   bool operator>(const String &other);
   bool operator<=(const String &other);
   bool operator>=(const String &other);
+  bool operator==(const char *other);
+  bool operator!=(const char *other);
+  bool operator<(const char *other);
+  bool operator>(const char *other);
+  bool operator<=(const char *other);
+  bool operator>=(const char *other);
 
   char operator[](unsigned int index) const;
 

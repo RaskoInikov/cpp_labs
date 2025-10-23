@@ -82,9 +82,6 @@ int main()
 
   cout << "\n=== Demonstration: SmartClock Editing ===" << endl;
   SmartClock smart(String("Apple"), String("Watch 9"), 2024, 18, String("watchOS 11"));
-  cout << "\nInitial SmartClock:" << endl;
-  smart.displayHeader();
-  cout << smart << endl;
 
   int choice = -1;
   while (choice != 0)

@@ -31,13 +31,6 @@ String::String(const String &other) : length(other.length)
 
 String::~String() { delete[] data; }
 
-String::String(String &&other) noexcept
-    : data(other.data), length(other.length)
-{
-    other.data = nullptr;
-    other.length = 0;
-}
-
 String String::operator+(const String &other) const
 {
     String res;
@@ -82,6 +75,12 @@ String &String::operator+=(const String &other)
     return *this;
 }
 
+String &String::operator+=(const char *other)
+{
+    *this = *this + String(other);
+    return *this;
+}
+
 String &String::operator=(const String &other)
 {
     if (this == &other)
@@ -90,20 +89,6 @@ String &String::operator=(const String &other)
     length = other.length;
     data = new char[length + 1];
     strcpy(data, other.data);
-    return *this;
-}
-
-String &String::operator=(String &&other) noexcept
-{
-    if (this != &other)
-    {
-        delete[] data;
-        data = other.data;
-        length = other.length;
-
-        other.data = nullptr;
-        other.length = 0;
-    }
     return *this;
 }
 
@@ -126,6 +111,12 @@ bool String::operator<(const String &other) { return strcmp(data, other.data) < 
 bool String::operator>(const String &other) { return strcmp(data, other.data) > 0; }
 bool String::operator<=(const String &other) { return strcmp(data, other.data) <= 0; }
 bool String::operator>=(const String &other) { return strcmp(data, other.data) >= 0; }
+bool String::operator==(const char *other) { return strcmp(data, other) == 0; }
+bool String::operator!=(const char *other) { return strcmp(data, other) != 0; }
+bool String::operator<(const char *other) { return strcmp(data, other) < 0; }
+bool String::operator>(const char *other) { return strcmp(data, other) > 0; }
+bool String::operator<=(const char *other) { return strcmp(data, other) <= 0; }
+bool String::operator>=(const char *other) { return strcmp(data, other) >= 0; }
 
 char String::operator[](unsigned int index) const
 {
