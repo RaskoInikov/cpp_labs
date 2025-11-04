@@ -46,3 +46,34 @@ std::istream &operator>>(std::istream &is, ElectronicClock &ec)
     ec.batteryLife = stringToInt(tmp);
     return is;
 }
+
+void ElectronicClock::edit()
+{
+    Clock::edit();
+
+    int choice = -1;
+    while (choice != 0)
+    {
+        std::cout << "\n--- ElectronicClock Additional Editing ---" << std::endl;
+        std::cout << "1. Change Battery Life" << std::endl;
+        std::cout << "0. Done" << std::endl;
+        std::cout << "Enter choice: ";
+        std::cin >> choice;
+        clearInputBuffer();
+
+        if (choice == 0)
+            break;
+
+        int val;
+        switch (choice)
+        {
+        case 1:
+            std::cout << "Enter new battery life (hours): ";
+            std::cin >> val;
+            setBatteryLife(val);
+            break;
+        default:
+            std::cout << "Invalid choice." << std::endl;
+        }
+    }
+}

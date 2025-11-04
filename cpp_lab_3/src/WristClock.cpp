@@ -5,7 +5,7 @@
 
 WristClock::WristClock() : MechanicalClock(), strapLength(0) {}
 WristClock::WristClock(const String &brand, const String &model, int year, int windingInterval, int strapLength)
-    : MechanicalClock(brand, model, year, windingInterval), strapLength(strapLength) {}
+    : Clock(brand, model, year), MechanicalClock(brand, model, year, windingInterval), strapLength(strapLength) {}
 WristClock::WristClock(const WristClock &other) { *this = other; }
 WristClock::~WristClock() {}
 
@@ -45,4 +45,65 @@ std::istream &operator>>(std::istream &is, WristClock &wc)
     is >> tmp;
     wc.strapLength = stringToInt(tmp);
     return is;
+}
+
+void WristClock::edit()
+{
+    int choice = -1;
+    while (choice != 0)
+    {
+        std::cout << "\n--- WristClock Menu ---" << std::endl;
+        std::cout << "1. Change Brand" << std::endl;
+        std::cout << "2. Change Model" << std::endl;
+        std::cout << "3. Change Year" << std::endl;
+        std::cout << "4. Change Winding Interval" << std::endl;
+        std::cout << "5. Change Strap Length" << std::endl;
+        std::cout << "0. Exit editing" << std::endl;
+        std::cout << "Enter choice: ";
+        std::cin >> choice;
+        clearInputBuffer();
+
+        String s;
+        int val;
+
+        switch (choice)
+        {
+        case 1:
+            std::cout << "Enter new brand: ";
+            std::cin >> s;
+            setBrand(s);
+            break;
+        case 2:
+            std::cout << "Enter new model: ";
+            std::cin >> s;
+            setModel(s);
+            break;
+        case 3:
+            std::cout << "Enter new year: ";
+            std::cin >> val;
+            setYear(val);
+            break;
+        case 4:
+            std::cout << "Enter new winding interval (days): ";
+            std::cin >> val;
+            setWindingInterval(val);
+            break;
+        case 5:
+            std::cout << "Enter new strap length (mm): ";
+            std::cin >> val;
+            setStrapLength(val);
+            break;
+        case 0:
+            return;
+        default:
+            std::cout << "Invalid choice." << std::endl;
+        }
+
+        if (choice >= 1 && choice <= 5)
+        {
+            std::cout << "\n✅ Updated WristClock:" << std::endl;
+            displayHeader();
+            std::cout << *this << std::endl;
+        }
+    }
 }

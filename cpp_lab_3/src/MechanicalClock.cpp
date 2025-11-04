@@ -46,3 +46,34 @@ std::istream &operator>>(std::istream &is, MechanicalClock &mc)
     mc.windingInterval = stringToInt(tmp);
     return is;
 }
+
+void MechanicalClock::edit()
+{
+    Clock::edit();
+
+    int choice = -1;
+    while (choice != 0)
+    {
+        std::cout << "\n--- MechanicalClock Additional Editing ---" << std::endl;
+        std::cout << "1. Change Winding Interval" << std::endl;
+        std::cout << "0. Done" << std::endl;
+        std::cout << "Enter choice: ";
+        std::cin >> choice;
+        clearInputBuffer();
+
+        if (choice == 0)
+            break;
+
+        int val;
+        switch (choice)
+        {
+        case 1:
+            std::cout << "Enter new winding interval (days): ";
+            std::cin >> val;
+            setWindingInterval(val);
+            break;
+        default:
+            std::cout << "Invalid choice." << std::endl;
+        }
+    }
+}

@@ -68,3 +68,46 @@ std::istream &operator>>(std::istream &is, Clock &c)
     c.year = stringToInt(tmp);
     return is;
 }
+
+void Clock::edit()
+{
+    int choice = -1;
+    while (choice != 0)
+    {
+        std::cout << "\n--- Clock Menu ---" << std::endl;
+        std::cout << "1. Change Brand" << std::endl;
+        std::cout << "2. Change Model" << std::endl;
+        std::cout << "3. Change Year" << std::endl;
+        std::cout << "0. Exit editing" << std::endl;
+        std::cout << "Enter choice: ";
+        std::cin >> choice;
+        clearInputBuffer();
+
+        if (choice == 0)
+            break;
+
+        String s;
+        int val;
+
+        switch (choice)
+        {
+        case 1:
+            std::cout << "Enter new brand: ";
+            std::cin >> s;
+            setBrand(s);
+            break;
+        case 2:
+            std::cout << "Enter new model: ";
+            std::cin >> s;
+            setModel(s);
+            break;
+        case 3:
+            std::cout << "Enter new year: ";
+            std::cin >> val;
+            setYear(val);
+            break;
+        default:
+            std::cout << "Invalid choice." << std::endl;
+        }
+    }
+}

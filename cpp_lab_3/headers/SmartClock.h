@@ -22,6 +22,7 @@ public:
     void setOsVersion(const String &v);
 
     virtual void displayHeader() const override;
+    virtual void edit() override;
 
     friend std::ostream &operator<<(std::ostream &os, const SmartClock &sc);
     friend std::istream &operator>>(std::istream &is, SmartClock &sc);
