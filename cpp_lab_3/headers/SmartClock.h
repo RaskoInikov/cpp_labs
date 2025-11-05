@@ -14,7 +14,7 @@ public:
     SmartClock();
     SmartClock(const String &brand, const String &model, int year, int batteryLife, const String &osVersion);
     SmartClock(const SmartClock &other);
-    virtual ~SmartClock();
+    virtual ~SmartClock() = default;
 
     SmartClock &operator=(const SmartClock &other);
 

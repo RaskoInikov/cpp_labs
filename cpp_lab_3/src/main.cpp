@@ -1,5 +1,3 @@
-#include <iostream>
-#include <iomanip>
 #include "../headers/Clock.h"
 #include "../headers/ElectronicClock.h"
 #include "../headers/MechanicalClock.h"
@@ -7,131 +5,303 @@
 #include "../headers/WallClock.h"
 #include "../headers/WristClock.h"
 #include "../utils/string_utils.h"
-
-using namespace std;
+#include <iomanip>
+#include <iostream>
+#include <vector>
+#include <memory>
 
 int main()
 {
-  int mainChoice;
+  std::vector<ElectronicClock> electronicClocks;
+  std::vector<MechanicalClock> mechanicalClocks;
+  std::vector<SmartClock> smartClocks;
+  std::vector<WallClock> wallClocks;
+  std::vector<WristClock> wristClocks;
 
-  do
+  while (true)
   {
-    cout << "\n=== CLOCK SYSTEM ===" << endl;
-    cout << "Choose clock type to fill:" << endl;
-    cout << "1. WristClock" << endl;
-    cout << "2. SmartClock" << endl;
-    cout << "0. Exit program" << endl;
-    cout << "Enter choice: ";
-    cin >> mainChoice;
+    std::cout << "\n=== CLOCK MENU ===\n"
+              << "1. Add ElectronicClock\n"
+              << "2. Add MechanicalClock\n"
+              << "3. Add SmartClock\n"
+              << "4. Add WallClock\n"
+              << "5. Add WristClock\n"
+              << "6. Display ElectronicClocks\n"
+              << "7. Display MechanicalClocks\n"
+              << "8. Display SmartClocks\n"
+              << "9. Display WallClocks\n"
+              << "10. Display WristClocks\n"
+              << "11. Edit Clock\n"
+              << "0. Exit\n"
+              << "Choice: ";
+
+    int choice;
+    std::cin >> choice;
     clearInputBuffer();
 
-    if (mainChoice == 0)
+    if (choice == 0)
+      break;
+
+    switch (choice)
     {
-      cout << "Exiting program..." << endl;
+    case 1:
+    {
+      int n;
+      std::cout << "How many ElectronicClocks to add? ";
+      std::cin >> n;
+      clearInputBuffer();
+
+      for (int i = 0; i < n; ++i)
+      {
+        ElectronicClock ec;
+        std::cout << "\n--- ElectronicClock #" << (i + 1) << " ---\n";
+        std::cin >> ec;
+        electronicClocks.push_back(ec);
+      }
       break;
     }
 
-    if (mainChoice != 1 && mainChoice != 2)
+    case 2:
     {
-      cout << "Invalid choice. Please try again." << endl;
-      continue;
-    }
-
-    int size;
-    cout << "Enter array size: ";
-    cin >> size;
-    clearInputBuffer();
-
-    if (mainChoice == 1)
-    {
-      WristClock *wristClocks = new WristClock[size];
-
-      cout << "\n--- Input data for WristClocks ---" << endl;
-      for (int i = 0; i < size; i++)
-      {
-        cout << "\nWristClock " << i + 1 << ":" << endl;
-        cin >> wristClocks[i];
-      }
-
-      cout << "\n--- WristClock Table ---" << endl;
-      wristClocks[0].displayHeader();
-      for (int i = 0; i < size; i++)
-        cout << wristClocks[i] << endl;
-
-      cout << "\nWould you like to edit any WristClock? (y/n): ";
-      char ans;
-      cin >> ans;
+      int n;
+      std::cout << "How many MechanicalClocks to add? ";
+      std::cin >> n;
       clearInputBuffer();
 
-      if (ans == 'y' || ans == 'Y')
+      for (int i = 0; i < n; ++i)
       {
-        int index;
-        cout << "Enter index (1 - " << size << "): ";
-        cin >> index;
-        clearInputBuffer();
-
-        if (index >= 1 && index <= size)
-        {
-          wristClocks[index - 1].edit();
-          cout << "\nUpdated WristClock:\n";
-          wristClocks[index - 1].displayHeader();
-          cout << wristClocks[index - 1] << endl;
-        }
-        else
-        {
-          cout << "Invalid index." << endl;
-        }
+        MechanicalClock mc;
+        std::cout << "\n--- MechanicalClock #" << (i + 1) << " ---\n";
+        std::cin >> mc;
+        mechanicalClocks.push_back(mc);
       }
-
-      delete[] wristClocks;
+      break;
     }
 
-    else if (mainChoice == 2)
+    case 3:
     {
-      SmartClock *smartClocks = new SmartClock[size];
+      int n;
+      std::cout << "How many SmartClocks to add? ";
+      std::cin >> n;
+      clearInputBuffer();
 
-      cout << "\n--- Input data for SmartClocks ---" << endl;
-      for (int i = 0; i < size; i++)
+      for (int i = 0; i < n; ++i)
       {
-        cout << "\nSmartClock " << i + 1 << ":" << endl;
-        cin >> smartClocks[i];
+        SmartClock sc;
+        std::cout << "\n--- SmartClock #" << (i + 1) << " ---\n";
+        std::cin >> sc;
+        smartClocks.push_back(sc);
+      }
+      break;
+    }
+
+    case 4:
+    {
+      int n;
+      std::cout << "How many WallClocks to add? ";
+      std::cin >> n;
+      clearInputBuffer();
+
+      for (int i = 0; i < n; ++i)
+      {
+        WallClock wc;
+        std::cout << "\n--- WallClock #" << (i + 1) << " ---\n";
+        std::cin >> wc;
+        wallClocks.push_back(wc);
+      }
+      break;
+    }
+
+    case 5:
+    {
+      int n;
+      std::cout << "How many WristClocks to add? ";
+      std::cin >> n;
+      clearInputBuffer();
+
+      for (int i = 0; i < n; ++i)
+      {
+        WristClock wr;
+        std::cout << "\n--- WristClock #" << (i + 1) << " ---\n";
+        std::cin >> wr;
+        wristClocks.push_back(wr);
+      }
+      break;
+    }
+
+      // === DISPLAY ===
+
+    case 6:
+    {
+      if (electronicClocks.empty())
+      {
+        std::cout << "No ElectronicClocks.\n";
+        break;
       }
 
-      cout << "\n--- SmartClock Table ---" << endl;
+      electronicClocks[0].displayHeader();
+      std::cout << std::string(110, '-') << "\n";
+      for (const auto &c : electronicClocks)
+        std::cout << c << "\n";
+      break;
+    }
+
+    case 7:
+    {
+      if (mechanicalClocks.empty())
+      {
+        std::cout << "No MechanicalClocks.\n";
+        break;
+      }
+
+      mechanicalClocks[0].displayHeader();
+      std::cout << std::string(110, '-') << "\n";
+      for (const auto &c : mechanicalClocks)
+        std::cout << c << "\n";
+      break;
+    }
+
+    case 8:
+    {
+      if (smartClocks.empty())
+      {
+        std::cout << "No SmartClocks.\n";
+        break;
+      }
+
       smartClocks[0].displayHeader();
-      for (int i = 0; i < size; i++)
-        cout << smartClocks[i] << endl;
-
-      cout << "\nWould you like to edit any SmartClock? (y/n): ";
-      char ans;
-      cin >> ans;
-      clearInputBuffer();
-
-      if (ans == 'y' || ans == 'Y')
-      {
-        int index;
-        cout << "Enter index (1 - " << size << "): ";
-        cin >> index;
-        clearInputBuffer();
-
-        if (index >= 1 && index <= size)
-        {
-          smartClocks[index - 1].edit();
-          cout << "\nUpdated SmartClock:\n";
-          smartClocks[index - 1].displayHeader();
-          cout << smartClocks[index - 1] << endl;
-        }
-        else
-        {
-          cout << "Invalid index." << endl;
-        }
-      }
-
-      delete[] smartClocks;
+      std::cout << std::string(110, '-') << "\n";
+      for (const auto &c : smartClocks)
+        std::cout << c << "\n";
+      break;
     }
 
-  } while (true);
+    case 9:
+    {
+      if (wallClocks.empty())
+      {
+        std::cout << "No WallClocks.\n";
+        break;
+      }
 
-  cout << "\nProgram terminated." << endl;
+      wallClocks[0].displayHeader();
+      std::cout << std::string(110, '-') << "\n";
+      for (const auto &c : wallClocks)
+        std::cout << c << "\n";
+      break;
+    }
+
+    case 10:
+    {
+      if (wristClocks.empty())
+      {
+        std::cout << "No WristClocks.\n";
+        break;
+      }
+
+      wristClocks[0].displayHeader();
+      std::cout << std::string(110, '-') << "\n";
+      for (const auto &c : wristClocks)
+        std::cout << c << "\n";
+      break;
+    }
+
+    // === EDIT ===
+    case 11:
+    {
+      std::cout << "Select clock type to edit:\n"
+                << "1. Electronic\n"
+                << "2. Mechanical\n"
+                << "3. Smart\n"
+                << "4. Wall\n"
+                << "5. Wrist\n"
+                << "Choice: ";
+      int t;
+      std::cin >> t;
+
+      size_t idx;
+      switch (t)
+      {
+      case 1:
+        if (electronicClocks.empty())
+        {
+          std::cout << "No ElectronicClocks.\n";
+          break;
+        }
+        std::cout << "Enter index (0-" << electronicClocks.size() - 1 << "): ";
+        std::cin >> idx;
+        if (idx >= electronicClocks.size())
+          std::cout << "Invalid index.\n";
+        else
+          electronicClocks[idx].edit();
+        break;
+
+      case 2:
+        if (mechanicalClocks.empty())
+        {
+          std::cout << "No MechanicalClocks.\n";
+          break;
+        }
+        std::cout << "Enter index (0-" << mechanicalClocks.size() - 1 << "): ";
+        std::cin >> idx;
+        if (idx >= mechanicalClocks.size())
+          std::cout << "Invalid index.\n";
+        else
+          mechanicalClocks[idx].edit();
+        break;
+
+      case 3:
+        if (smartClocks.empty())
+        {
+          std::cout << "No SmartClocks.\n";
+          break;
+        }
+        std::cout << "Enter index (0-" << smartClocks.size() - 1 << "): ";
+        std::cin >> idx;
+        if (idx >= smartClocks.size())
+          std::cout << "Invalid index.\n";
+        else
+          smartClocks[idx].edit();
+        break;
+
+      case 4:
+        if (wallClocks.empty())
+        {
+          std::cout << "No WallClocks.\n";
+          break;
+        }
+        std::cout << "Enter index (0-" << wallClocks.size() - 1 << "): ";
+        std::cin >> idx;
+        if (idx >= wallClocks.size())
+          std::cout << "Invalid index.\n";
+        else
+          wallClocks[idx].edit();
+        break;
+
+      case 5:
+        if (wristClocks.empty())
+        {
+          std::cout << "No WristClocks.\n";
+          break;
+        }
+        std::cout << "Enter index (0-" << wristClocks.size() - 1 << "): ";
+        std::cin >> idx;
+        if (idx >= wristClocks.size())
+          std::cout << "Invalid index.\n";
+        else
+          wristClocks[idx].edit();
+        break;
+
+      default:
+        std::cout << "Invalid type.\n";
+      }
+      break;
+    }
+
+    default:
+      std::cout << "Invalid choice.\n";
+    }
+  }
+
   return 0;
 }

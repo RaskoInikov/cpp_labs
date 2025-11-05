@@ -7,7 +7,6 @@ MechanicalClock::MechanicalClock() : Clock(), windingInterval(0) {}
 MechanicalClock::MechanicalClock(const String &brand, const String &model, int year, int windingInterval)
     : Clock(brand, model, year), windingInterval(windingInterval) {}
 MechanicalClock::MechanicalClock(const MechanicalClock &other) { *this = other; }
-MechanicalClock::~MechanicalClock() {}
 
 MechanicalClock &MechanicalClock::operator=(const MechanicalClock &other)
 {
@@ -50,19 +49,13 @@ std::istream &operator>>(std::istream &is, MechanicalClock &mc)
 void MechanicalClock::edit()
 {
     Clock::edit();
-
     int choice = -1;
     while (choice != 0)
     {
-        std::cout << "\n--- MechanicalClock Additional Editing ---" << std::endl;
-        std::cout << "1. Change Winding Interval" << std::endl;
-        std::cout << "0. Done" << std::endl;
+        std::cout << "\n--- MechanicalClock Edit ---\n1. Change Winding Interval\n0. Next" << std::endl;
         std::cout << "Enter choice: ";
         std::cin >> choice;
         clearInputBuffer();
-
-        if (choice == 0)
-            break;
 
         int val;
         switch (choice)
@@ -72,6 +65,8 @@ void MechanicalClock::edit()
             std::cin >> val;
             setWindingInterval(val);
             break;
+        case 0:
+            return;
         default:
             std::cout << "Invalid choice." << std::endl;
         }

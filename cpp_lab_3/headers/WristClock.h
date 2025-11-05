@@ -14,7 +14,7 @@ public:
     WristClock();
     WristClock(const String &brand, const String &model, int year, int windingInterval, int strapLength);
     WristClock(const WristClock &other);
-    virtual ~WristClock();
+    virtual ~WristClock() = default;
 
     WristClock &operator=(const WristClock &other);
 

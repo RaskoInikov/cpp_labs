@@ -7,14 +7,14 @@
 
 class ElectronicClock : virtual public Clock
 {
-private:
+protected:
     int batteryLife;
 
 public:
     ElectronicClock();
     ElectronicClock(const String &brand, const String &model, int year, int batteryLife);
     ElectronicClock(const ElectronicClock &other);
-    virtual ~ElectronicClock();
+    virtual ~ElectronicClock() = default;
 
     ElectronicClock &operator=(const ElectronicClock &other);
 

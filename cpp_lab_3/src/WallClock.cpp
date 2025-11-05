@@ -5,9 +5,8 @@
 
 WallClock::WallClock() : MechanicalClock(), diameter(0) {}
 WallClock::WallClock(const String &brand, const String &model, int year, int windingInterval, int diameter)
-    : Clock(brand, model, year), MechanicalClock(brand, model, year, windingInterval), diameter(diameter) {}
+    : MechanicalClock(brand, model, year, windingInterval), diameter(diameter) {}
 WallClock::WallClock(const WallClock &other) { *this = other; }
-WallClock::~WallClock() {}
 
 WallClock &WallClock::operator=(const WallClock &other)
 {
@@ -50,19 +49,13 @@ std::istream &operator>>(std::istream &is, WallClock &wc)
 void WallClock::edit()
 {
     MechanicalClock::edit();
-
     int choice = -1;
     while (choice != 0)
     {
-        std::cout << "\n--- WallClock Additional Editing ---" << std::endl;
-        std::cout << "1. Change Diameter" << std::endl;
-        std::cout << "0. Done" << std::endl;
+        std::cout << "\n--- WallClock Edit ---\n1. Change Diameter\n0. Done" << std::endl;
         std::cout << "Enter choice: ";
         std::cin >> choice;
         clearInputBuffer();
-
-        if (choice == 0)
-            break;
 
         int val;
         switch (choice)
@@ -72,6 +65,8 @@ void WallClock::edit()
             std::cin >> val;
             setDiameter(val);
             break;
+        case 0:
+            return;
         default:
             std::cout << "Invalid choice." << std::endl;
         }

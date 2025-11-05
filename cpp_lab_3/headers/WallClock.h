@@ -14,7 +14,7 @@ public:
     WallClock();
     WallClock(const String &brand, const String &model, int year, int windingInterval, int diameter);
     WallClock(const WallClock &other);
-    virtual ~WallClock();
+    virtual ~WallClock() = default;
 
     WallClock &operator=(const WallClock &other);
 

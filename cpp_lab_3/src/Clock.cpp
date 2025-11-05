@@ -6,7 +6,6 @@
 Clock::Clock() : brand(), model(), year(0) {}
 Clock::Clock(const String &brand_, const String &model_, int year_) : brand(brand_), model(model_), year(year_) {}
 Clock::Clock(const Clock &other) { *this = other; }
-Clock::~Clock() {}
 
 Clock &Clock::operator=(const Clock &other)
 {
@@ -24,19 +23,6 @@ String Clock::getModel() const { return model; }
 void Clock::setModel(const String &m) { model = m; }
 int Clock::getYear() const { return year; }
 void Clock::setYear(int y) { year = y; }
-
-void Clock::displayHeader() const
-{
-    std::cout << std::left
-              << std::setw(15) << "Brand"
-              << std::setw(15) << "Model"
-              << std::setw(8) << "Year"
-              << std::setw(15) << "Battery Life"
-              << std::setw(18) << "Winding Interval"
-              << std::setw(15) << "OS Version"
-              << std::setw(12) << "Diameter"
-              << std::setw(15) << "Strap Length" << std::endl;
-}
 
 std::ostream &operator<<(std::ostream &os, const Clock &c)
 {
@@ -74,17 +60,11 @@ void Clock::edit()
     int choice = -1;
     while (choice != 0)
     {
-        std::cout << "\n--- Clock Menu ---" << std::endl;
-        std::cout << "1. Change Brand" << std::endl;
-        std::cout << "2. Change Model" << std::endl;
-        std::cout << "3. Change Year" << std::endl;
-        std::cout << "0. Exit editing" << std::endl;
+        std::cout << "\n--- Clock Base Edit ---" << std::endl;
+        std::cout << "1. Change Brand\n2. Change Model\n3. Change Year\n0. Next" << std::endl;
         std::cout << "Enter choice: ";
         std::cin >> choice;
         clearInputBuffer();
-
-        if (choice == 0)
-            break;
 
         String s;
         int val;
@@ -106,8 +86,23 @@ void Clock::edit()
             std::cin >> val;
             setYear(val);
             break;
+        case 0:
+            return;
         default:
             std::cout << "Invalid choice." << std::endl;
         }
     }
+}
+
+void Clock::displayHeader() const
+{
+    std::cout << std::left
+              << std::setw(15) << "Brand"
+              << std::setw(15) << "Model"
+              << std::setw(8) << "Year"
+              << std::setw(15) << "Battery Life"
+              << std::setw(18) << "Winding Interval"
+              << std::setw(15) << "OS Version"
+              << std::setw(12) << "Diameter"
+              << std::setw(15) << "Strap Length" << std::endl;
 }

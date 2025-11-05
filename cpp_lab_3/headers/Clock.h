@@ -6,7 +6,7 @@
 
 class Clock
 {
-private:
+protected:
     String brand;
     String model;
     int year;
@@ -15,7 +15,7 @@ public:
     Clock();
     Clock(const String &brand, const String &model, int year);
     Clock(const Clock &other);
-    virtual ~Clock();
+    virtual ~Clock() = default;
 
     Clock &operator=(const Clock &other);
 

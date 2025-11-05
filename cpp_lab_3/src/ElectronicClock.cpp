@@ -7,7 +7,6 @@ ElectronicClock::ElectronicClock() : Clock(), batteryLife(0) {}
 ElectronicClock::ElectronicClock(const String &brand, const String &model, int year, int batteryLife)
     : Clock(brand, model, year), batteryLife(batteryLife) {}
 ElectronicClock::ElectronicClock(const ElectronicClock &other) { *this = other; }
-ElectronicClock::~ElectronicClock() {}
 
 ElectronicClock &ElectronicClock::operator=(const ElectronicClock &other)
 {
@@ -50,19 +49,13 @@ std::istream &operator>>(std::istream &is, ElectronicClock &ec)
 void ElectronicClock::edit()
 {
     Clock::edit();
-
     int choice = -1;
     while (choice != 0)
     {
-        std::cout << "\n--- ElectronicClock Additional Editing ---" << std::endl;
-        std::cout << "1. Change Battery Life" << std::endl;
-        std::cout << "0. Done" << std::endl;
+        std::cout << "\n--- ElectronicClock Edit ---\n1. Change Battery Life\n0. Next" << std::endl;
         std::cout << "Enter choice: ";
         std::cin >> choice;
         clearInputBuffer();
-
-        if (choice == 0)
-            break;
 
         int val;
         switch (choice)
@@ -72,6 +65,8 @@ void ElectronicClock::edit()
             std::cin >> val;
             setBatteryLife(val);
             break;
+        case 0:
+            return;
         default:
             std::cout << "Invalid choice." << std::endl;
         }

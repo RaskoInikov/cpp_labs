@@ -7,14 +7,14 @@
 
 class MechanicalClock : virtual public Clock
 {
-private:
+protected:
     int windingInterval;
 
 public:
     MechanicalClock();
     MechanicalClock(const String &brand, const String &model, int year, int windingInterval);
     MechanicalClock(const MechanicalClock &other);
-    virtual ~MechanicalClock();
+    virtual ~MechanicalClock() = default;
 
     MechanicalClock &operator=(const MechanicalClock &other);
 
