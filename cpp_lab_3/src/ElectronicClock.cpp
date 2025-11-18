@@ -20,19 +20,18 @@ ElectronicClock &ElectronicClock::operator=(const ElectronicClock &other)
 int ElectronicClock::getBatteryLife() const { return batteryLife; }
 void ElectronicClock::setBatteryLife(int hours) { batteryLife = hours; }
 
-void ElectronicClock::displayHeader() const { Clock::displayHeader(); }
+void ElectronicClock::displayHeader() const
+{
+    Clock::displayHeader();
+    std::cout << std::left
+              << std::setw(15) << "Battery Life";
+}
 
 std::ostream &operator<<(std::ostream &os, const ElectronicClock &ec)
 {
+    os << static_cast<const Clock &>(ec);
     os << std::left
-       << std::setw(15) << ec.getBrand()
-       << std::setw(15) << ec.getModel()
-       << std::setw(8) << ec.getYear()
-       << std::setw(15) << ec.getBatteryLife()
-       << std::setw(18) << "-"
-       << std::setw(15) << "-"
-       << std::setw(12) << "-"
-       << std::setw(15) << "-";
+       << std::setw(15) << ec.getBatteryLife();
     return os;
 }
 
@@ -53,9 +52,7 @@ void ElectronicClock::edit()
     while (choice != 0)
     {
         std::cout << "\n--- ElectronicClock Edit ---\n1. Change Battery Life\n0. Next" << std::endl;
-        std::cout << "Enter choice: ";
-        std::cin >> choice;
-        clearInputBuffer();
+        handleUserInput(choice);
 
         int val;
         switch (choice)

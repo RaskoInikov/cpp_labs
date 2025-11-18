@@ -32,12 +32,10 @@ int main()
               << "9. Display WallClocks\n"
               << "10. Display WristClocks\n"
               << "11. Edit Clock\n"
-              << "0. Exit\n"
-              << "Choice: ";
+              << "0. Exit\n";
 
-    int choice;
-    std::cin >> choice;
-    clearInputBuffer();
+    int choice = -1;
+    handleUserInput(choice);
 
     if (choice == 0)
       break;
@@ -46,10 +44,9 @@ int main()
     {
     case 1:
     {
-      int n;
+      int n = -1;
       std::cout << "How many ElectronicClocks to add? ";
-      std::cin >> n;
-      clearInputBuffer();
+      handleUserInput(n);
 
       for (int i = 0; i < n; ++i)
       {
@@ -65,8 +62,7 @@ int main()
     {
       int n;
       std::cout << "How many MechanicalClocks to add? ";
-      std::cin >> n;
-      clearInputBuffer();
+      handleUserInput(n);
 
       for (int i = 0; i < n; ++i)
       {
@@ -82,8 +78,7 @@ int main()
     {
       int n;
       std::cout << "How many SmartClocks to add? ";
-      std::cin >> n;
-      clearInputBuffer();
+      handleUserInput(n);
 
       for (int i = 0; i < n; ++i)
       {
@@ -99,8 +94,7 @@ int main()
     {
       int n;
       std::cout << "How many WallClocks to add? ";
-      std::cin >> n;
-      clearInputBuffer();
+      handleUserInput(n);
 
       for (int i = 0; i < n; ++i)
       {
@@ -116,8 +110,7 @@ int main()
     {
       int n;
       std::cout << "How many WristClocks to add? ";
-      std::cin >> n;
-      clearInputBuffer();
+      handleUserInput(n);
 
       for (int i = 0; i < n; ++i)
       {
@@ -139,9 +132,11 @@ int main()
         break;
       }
 
-      electronicClocks[0].displayHeader();
-      std::cout << std::string(110, '-') << "\n";
-      for (const auto &c : electronicClocks)
+      ElectronicClock ec;
+      ec.displayHeader();
+      std::cout << "\n"
+                << std::string(54, '-') << "\n";
+      for (const ElectronicClock &c : electronicClocks)
         std::cout << c << "\n";
       break;
     }
@@ -154,9 +149,11 @@ int main()
         break;
       }
 
-      mechanicalClocks[0].displayHeader();
-      std::cout << std::string(110, '-') << "\n";
-      for (const auto &c : mechanicalClocks)
+      MechanicalClock mc;
+      mc.displayHeader();
+      std::cout << "\n"
+                << std::string(54, '-') << "\n";
+      for (const MechanicalClock &c : mechanicalClocks)
         std::cout << c << "\n";
       break;
     }
@@ -169,9 +166,11 @@ int main()
         break;
       }
 
-      smartClocks[0].displayHeader();
-      std::cout << std::string(110, '-') << "\n";
-      for (const auto &c : smartClocks)
+      SmartClock sc;
+      sc.displayHeader();
+      std::cout << "\n"
+                << std::string(70, '-') << "\n";
+      for (const SmartClock &c : smartClocks)
         std::cout << c << "\n";
       break;
     }
@@ -184,9 +183,11 @@ int main()
         break;
       }
 
-      wallClocks[0].displayHeader();
-      std::cout << std::string(110, '-') << "\n";
-      for (const auto &c : wallClocks)
+      WallClock wc;
+      wc.displayHeader();
+      std::cout << "\n"
+                << std::string(70, '-') << "\n";
+      for (const WallClock &c : wallClocks)
         std::cout << c << "\n";
       break;
     }
@@ -199,9 +200,11 @@ int main()
         break;
       }
 
-      wristClocks[0].displayHeader();
-      std::cout << std::string(110, '-') << "\n";
-      for (const auto &c : wristClocks)
+      WristClock wr;
+      wr.displayHeader();
+      std::cout << "\n"
+                << std::string(70, '-') << "\n";
+      for (const WristClock &c : wristClocks)
         std::cout << c << "\n";
       break;
     }

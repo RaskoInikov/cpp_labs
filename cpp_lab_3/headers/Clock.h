@@ -6,7 +6,7 @@
 
 class Clock
 {
-protected:
+private:
     String brand;
     String model;
     int year;

@@ -29,12 +29,12 @@ std::ostream &operator<<(std::ostream &os, const Clock &c)
     os << std::left
        << std::setw(15) << c.getBrand()
        << std::setw(15) << c.getModel()
-       << std::setw(8) << c.getYear()
-       << std::setw(15) << "-"
-       << std::setw(18) << "-"
-       << std::setw(15) << "-"
-       << std::setw(12) << "-"
-       << std::setw(15) << "-";
+       << std::setw(8) << c.getYear();
+    //    << std::setw(15) << "-"
+    //    << std::setw(18) << "-"
+    //    << std::setw(15) << "-"
+    //    << std::setw(12) << "-"
+    //    << std::setw(15) << "-";
     return os;
 }
 
@@ -55,6 +55,14 @@ std::istream &operator>>(std::istream &is, Clock &c)
     return is;
 }
 
+void Clock::displayHeader() const
+{
+    std::cout << std::left
+              << std::setw(15) << "Brand"
+              << std::setw(15) << "Model"
+              << std::setw(8) << "Year";
+}
+
 void Clock::edit()
 {
     int choice = -1;
@@ -62,9 +70,7 @@ void Clock::edit()
     {
         std::cout << "\n--- Clock Base Edit ---" << std::endl;
         std::cout << "1. Change Brand\n2. Change Model\n3. Change Year\n0. Next" << std::endl;
-        std::cout << "Enter choice: ";
-        std::cin >> choice;
-        clearInputBuffer();
+        handleUserInput(choice);
 
         String s;
         int val;
@@ -92,17 +98,4 @@ void Clock::edit()
             std::cout << "Invalid choice." << std::endl;
         }
     }
-}
-
-void Clock::displayHeader() const
-{
-    std::cout << std::left
-              << std::setw(15) << "Brand"
-              << std::setw(15) << "Model"
-              << std::setw(8) << "Year"
-              << std::setw(15) << "Battery Life"
-              << std::setw(18) << "Winding Interval"
-              << std::setw(15) << "OS Version"
-              << std::setw(12) << "Diameter"
-              << std::setw(15) << "Strap Length" << std::endl;
 }

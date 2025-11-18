@@ -20,19 +20,18 @@ SmartClock &SmartClock::operator=(const SmartClock &other)
 String SmartClock::getOsVersion() const { return osVersion; }
 void SmartClock::setOsVersion(const String &v) { osVersion = v; }
 
-void SmartClock::displayHeader() const { Clock::displayHeader(); }
+void SmartClock::displayHeader() const
+{
+    ElectronicClock::displayHeader();
+    std::cout << std::left
+              << std::setw(15) << "OS Version";
+}
 
 std::ostream &operator<<(std::ostream &os, const SmartClock &sc)
 {
+    os << static_cast<const ElectronicClock &>(sc);
     os << std::left
-       << std::setw(15) << sc.getBrand()
-       << std::setw(15) << sc.getModel()
-       << std::setw(8) << sc.getYear()
-       << std::setw(15) << sc.getBatteryLife()
-       << std::setw(18) << "-"
-       << std::setw(15) << sc.getOsVersion()
-       << std::setw(12) << "-"
-       << std::setw(15) << "-";
+       << std::setw(15) << sc.getOsVersion();
     return os;
 }
 
@@ -53,9 +52,7 @@ void SmartClock::edit()
     while (choice != 0)
     {
         std::cout << "\n--- SmartClock Edit ---\n1. Change OS Version\n0. Done" << std::endl;
-        std::cout << "Enter choice: ";
-        std::cin >> choice;
-        clearInputBuffer();
+        handleUserInput(choice);
 
         String s;
         switch (choice)

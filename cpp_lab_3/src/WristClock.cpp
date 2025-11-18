@@ -20,18 +20,17 @@ WristClock &WristClock::operator=(const WristClock &other)
 int WristClock::getStrapLength() const { return strapLength; }
 void WristClock::setStrapLength(int mm) { strapLength = mm; }
 
-void WristClock::displayHeader() const { Clock::displayHeader(); }
+void WristClock::displayHeader() const
+{
+    MechanicalClock::displayHeader();
+    std::cout << std::left
+              << std::setw(15) << "Strap Length";
+}
 
 std::ostream &operator<<(std::ostream &os, const WristClock &wc)
 {
+    os << static_cast<const MechanicalClock &>(wc);
     os << std::left
-       << std::setw(15) << wc.getBrand()
-       << std::setw(15) << wc.getModel()
-       << std::setw(8) << wc.getYear()
-       << std::setw(15) << "-"
-       << std::setw(18) << wc.getWindingInterval()
-       << std::setw(15) << "-"
-       << std::setw(12) << "-"
        << std::setw(15) << wc.getStrapLength();
     return os;
 }
@@ -53,9 +52,7 @@ void WristClock::edit()
     while (choice != 0)
     {
         std::cout << "\n--- WristClock Edit ---\n1. Change Strap Length\n0. Done" << std::endl;
-        std::cout << "Enter choice: ";
-        std::cin >> choice;
-        clearInputBuffer();
+        handleUserInput(choice);
 
         int val;
         switch (choice)

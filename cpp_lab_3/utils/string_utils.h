@@ -5,5 +5,6 @@
 
 int stringToInt(const String &s);
 void clearInputBuffer();
+void handleUserInput(int &choice);
 
 #endif

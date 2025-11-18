@@ -20,19 +20,18 @@ MechanicalClock &MechanicalClock::operator=(const MechanicalClock &other)
 int MechanicalClock::getWindingInterval() const { return windingInterval; }
 void MechanicalClock::setWindingInterval(int days) { windingInterval = days; }
 
-void MechanicalClock::displayHeader() const { Clock::displayHeader(); }
+void MechanicalClock::displayHeader() const
+{
+    Clock::displayHeader();
+    std::cout << std::left
+              << std::setw(18) << "Winding Interval";
+}
 
 std::ostream &operator<<(std::ostream &os, const MechanicalClock &mc)
 {
+    os << static_cast<const Clock &>(mc);
     os << std::left
-       << std::setw(15) << mc.getBrand()
-       << std::setw(15) << mc.getModel()
-       << std::setw(8) << mc.getYear()
-       << std::setw(15) << "-"
-       << std::setw(18) << mc.getWindingInterval()
-       << std::setw(15) << "-"
-       << std::setw(12) << "-"
-       << std::setw(15) << "-";
+       << std::setw(18) << mc.getWindingInterval();
     return os;
 }
 
@@ -53,9 +52,7 @@ void MechanicalClock::edit()
     while (choice != 0)
     {
         std::cout << "\n--- MechanicalClock Edit ---\n1. Change Winding Interval\n0. Next" << std::endl;
-        std::cout << "Enter choice: ";
-        std::cin >> choice;
-        clearInputBuffer();
+        handleUserInput(choice);
 
         int val;
         switch (choice)

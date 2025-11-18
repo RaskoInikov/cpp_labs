@@ -7,7 +7,7 @@
 
 class ElectronicClock : virtual public Clock
 {
-protected:
+private:
     int batteryLife;
 
 public:

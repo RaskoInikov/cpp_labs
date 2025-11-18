@@ -7,7 +7,7 @@
 
 class MechanicalClock : virtual public Clock
 {
-protected:
+private:
     int windingInterval;
 
 public:

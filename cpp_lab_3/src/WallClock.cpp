@@ -20,19 +20,18 @@ WallClock &WallClock::operator=(const WallClock &other)
 int WallClock::getDiameter() const { return diameter; }
 void WallClock::setDiameter(int mm) { diameter = mm; }
 
-void WallClock::displayHeader() const { Clock::displayHeader(); }
+void WallClock::displayHeader() const
+{
+    MechanicalClock::displayHeader();
+    std::cout << std::left
+              << std::setw(12) << "Diameter";
+}
 
 std::ostream &operator<<(std::ostream &os, const WallClock &wc)
 {
+    os << static_cast<const MechanicalClock &>(wc);
     os << std::left
-       << std::setw(15) << wc.getBrand()
-       << std::setw(15) << wc.getModel()
-       << std::setw(8) << wc.getYear()
-       << std::setw(15) << "-"
-       << std::setw(18) << wc.getWindingInterval()
-       << std::setw(15) << "-"
-       << std::setw(12) << wc.getDiameter()
-       << std::setw(15) << "-";
+       << std::setw(12) << wc.getDiameter();
     return os;
 }
 
@@ -53,9 +52,7 @@ void WallClock::edit()
     while (choice != 0)
     {
         std::cout << "\n--- WallClock Edit ---\n1. Change Diameter\n0. Done" << std::endl;
-        std::cout << "Enter choice: ";
-        std::cin >> choice;
-        clearInputBuffer();
+        handleUserInput(choice);
 
         int val;
         switch (choice)

@@ -33,3 +33,10 @@ void clearInputBuffer()
 {
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
+
+void handleUserInput(int &choice)
+{
+    std::cout << "Enter choice: ";
+    std::cin >> choice;
+    clearInputBuffer();
+}
