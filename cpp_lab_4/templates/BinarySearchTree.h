@@ -53,6 +53,8 @@ public:
     iterator end() const;
 
     void print() const;
+    void printNode(Node *node, const std::string &prefix, bool isRoot) const;
+    void printList() const;
 
     // walk with visitor (in-order)
     void inorderVisit(std::function<void(const T &)> visitor) const;

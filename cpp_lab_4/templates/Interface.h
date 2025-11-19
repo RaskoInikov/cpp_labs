@@ -38,6 +38,7 @@ public:
     void addInteractive();
     void removeInteractive();
     void printTree() const;
+    void printList() const;
     void iterateInteractive();
     void sortInteractive();
     void searchInteractive();

@@ -155,13 +155,76 @@ void BinarySearchTree<T>::print() const
         std::cout << "(tree is empty)\n";
         return;
     }
-    // print header using T::displayHeader()
+
+    // Header
     T sample;
     sample.displayHeader();
-    std::cout << std::endl;
-    // in-order print using operator<<
-    inorderVisit([](const T &v)
-                 { std::cout << v << std::endl; });
+    std::cout << "\n";
+
+    // Tree structure
+    printNode(root, "", true);
+}
+
+template <class T>
+void BinarySearchTree<T>::printNode(Node *node, const std::string &prefix, bool isRoot) const
+{
+    if (!node)
+        return;
+
+    // Отрисовка текущего узла
+    std::cout << prefix;
+
+    if (isRoot)
+        std::cout << "(root) ";
+    else
+        std::cout << (node == node->parent->left ? "L── " : "R── ");
+
+    std::cout << node->data << "\n";
+
+    // Формирование новых префиксов
+    std::string childPrefix = prefix + (isRoot ? "    " : (node == node->parent->left ? "│   " : "    "));
+
+    // Левый ребёнок
+    if (node->left)
+        printNode(node->left, childPrefix, false);
+
+    // Правый ребёнок
+    if (node->right)
+        printNode(node->right, childPrefix, false);
+}
+
+template <class T>
+void BinarySearchTree<T>::printList() const
+{
+    if (!root)
+    {
+        std::cout << "(tree is empty)\n";
+        return;
+    }
+
+    // Header
+    T sample;
+    sample.displayHeader();
+    std::cout << "\n";
+
+    // Preorder обход дерева
+    std::stack<Node *> st;
+    st.push(root);
+
+    while (!st.empty())
+    {
+        Node *node = st.top();
+        st.pop();
+
+        std::cout << node->data << "\n";
+
+        // важный момент: сначала помещаем right, потом left —
+        // чтобы left напечатался раньше (LIFO stack)
+        if (node->right)
+            st.push(node->right);
+        if (node->left)
+            st.push(node->left);
+    }
 }
 
 template <class T>

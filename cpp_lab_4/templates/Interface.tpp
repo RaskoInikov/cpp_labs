@@ -149,6 +149,14 @@ void Interface<T>::printTree() const
 }
 
 template <typename T>
+void Interface<T>::printList() const
+{
+    std::cout << "=== " << name << " tree ===\n";
+    tree.printList();
+    std::cout << "=========================\n";
+}
+
+template <typename T>
 void Interface<T>::iterateInteractive()
 {
     std::cout << "Iterating forward (press Enter to step; type 'q' then Enter to quit):\n";
@@ -283,10 +291,10 @@ void Interface<T>::runMenu()
         std::cout << "\n--- " << name << " Tree Menu ---\n";
         std::cout << "1. Add " << name << "\n";
         std::cout << "2. Remove " << name << "\n";
-        std::cout << "3. Print tree\n";
+        std::cout << "3. Print Tree\n";
         std::cout << "4. Search\n";
         std::cout << "5. Sort\n";
-        std::cout << "6. Iterate\n";
+        std::cout << "6. Print List\n";
         std::cout << "0. Back to type selection\n";
         std::cout << "Choice: ";
         if (!(std::cin >> choice))
@@ -315,7 +323,8 @@ void Interface<T>::runMenu()
             sortInteractive();
             break;
         case 6:
-            iterateInteractive();
+            // iterateInteractive();
+            printList();
             break;
         case 0:
             std::cout << "Returning to main menu.\n";
