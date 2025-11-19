@@ -171,6 +171,7 @@ void Interface<T>::iterateInteractive()
         if (line == "q")
             break;
         ++it;
+        s
     }
     std::cout << "Iteration finished.\n";
 }
