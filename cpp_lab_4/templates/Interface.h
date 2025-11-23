@@ -17,12 +17,10 @@ class Interface
 {
 private:
     BinarySearchTree<T> tree;
-    std::string name; // display name for type
-    // helper to read a line and split into ints
+    std::string name;
     static std::vector<int> parseFieldChoiceLine(const std::string &line);
     static void clearStdin();
 
-    // helpers to build comparator and predicate using Reflection<T>
     using FD = FieldDescriptor<T>;
     static std::function<bool(const T &, const T &)> makeComparator(const std::vector<FD> &fields,
                                                                     const std::vector<int> &chosenIds);
@@ -34,12 +32,11 @@ public:
     explicit Interface(const std::string &name_);
     ~Interface() = default;
 
-    void runMenu(); // main loop for this type
+    void runMenu();
     void addInteractive();
     void removeInteractive();
     void printTree() const;
     void printList() const;
-    void iterateInteractive();
     void sortInteractive();
     void searchInteractive();
 };

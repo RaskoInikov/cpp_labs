@@ -10,10 +10,9 @@ TreeIterator<T> &TreeIterator<T>::operator++()
         return *this;
     }
     if (!current)
-    { // already end()
+    {
         return *this;
     }
-    // successor: if right child -> leftmost of right
     if (current->right)
     {
         Node *n = current->right;
@@ -23,7 +22,6 @@ TreeIterator<T> &TreeIterator<T>::operator++()
     }
     else
     {
-        // go up until we come from left
         Node *p = current->parent;
         while (p && current == p->right)
         {
@@ -43,7 +41,6 @@ TreeIterator<T> &TreeIterator<T>::operator--()
         current = nullptr;
         return *this;
     }
-    // if current == nullptr (end), go to max
     if (!current)
     {
         current = tree->findMax(tree->root);

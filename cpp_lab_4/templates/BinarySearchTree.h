@@ -25,7 +25,6 @@ public:
 
 private:
     Node *root;
-    // comparator used for ordering (strict weak ordering)
     std::function<bool(const T &, const T &)> cmp;
 
     Node *findMin(Node *node) const;
@@ -45,7 +44,6 @@ public:
     void setComparator(std::function<bool(const T &, const T &)> comparator);
 
     void add(const T &value);
-    // remove using the tree comparator (must be set)
     void remove(const T &value);
     void clear();
 
@@ -55,17 +53,10 @@ public:
     void print() const;
     void printNode(Node *node, const std::string &prefix, bool isRoot) const;
     void printList() const;
-
-    // walk with visitor (in-order)
     void inorderVisit(std::function<void(const T &)> visitor) const;
-
-    // extract all items to vector in-order
-    std::vector<T> toVector() const;
-
-    // rebuild tree from vector (inserts in order)
     void buildFromVector(const std::vector<T> &v);
 
-    // search by predicate (returns all matching)
+    std::vector<T> toVector() const;
     std::vector<T> search(std::function<bool(const T &)> predicate) const;
 
     friend class TreeIterator<T>;

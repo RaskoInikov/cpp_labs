@@ -85,7 +85,6 @@ typename BinarySearchTree<T>::Node *BinarySearchTree<T>::removeNode(Node *node, 
     }
     else
     {
-        // found node to remove
         if (!node->left)
         {
             Node *r = node->right;
@@ -155,13 +154,9 @@ void BinarySearchTree<T>::print() const
         std::cout << "(tree is empty)\n";
         return;
     }
-
-    // Header
     T sample;
     sample.displayHeader();
     std::cout << "\n";
-
-    // Tree structure
     printNode(root, "", true);
 }
 
@@ -171,7 +166,6 @@ void BinarySearchTree<T>::printNode(Node *node, const std::string &prefix, bool 
     if (!node)
         return;
 
-    // Отрисовка текущего узла
     std::cout << prefix;
 
     if (isRoot)
@@ -180,15 +174,11 @@ void BinarySearchTree<T>::printNode(Node *node, const std::string &prefix, bool 
         std::cout << (node == node->parent->left ? "L── " : "R── ");
 
     std::cout << node->data << "\n";
-
-    // Формирование новых префиксов
     std::string childPrefix = prefix + (isRoot ? "    " : (node == node->parent->left ? "│   " : "    "));
 
-    // Левый ребёнок
     if (node->left)
         printNode(node->left, childPrefix, false);
 
-    // Правый ребёнок
     if (node->right)
         printNode(node->right, childPrefix, false);
 }
@@ -202,12 +192,10 @@ void BinarySearchTree<T>::printList() const
         return;
     }
 
-    // Header
     T sample;
     sample.displayHeader();
     std::cout << "\n";
 
-    // Preorder обход дерева
     std::stack<Node *> st;
     st.push(root);
 
@@ -215,11 +203,7 @@ void BinarySearchTree<T>::printList() const
     {
         Node *node = st.top();
         st.pop();
-
         std::cout << node->data << "\n";
-
-        // важный момент: сначала помещаем right, потом left —
-        // чтобы left напечатался раньше (LIFO stack)
         if (node->right)
             st.push(node->right);
         if (node->left)
@@ -259,7 +243,7 @@ template <class T>
 void BinarySearchTree<T>::buildFromVector(const std::vector<T> &v)
 {
     clear();
-    for (const auto &x : v)
+    for (const T &x : v)
         add(x);
 }
 

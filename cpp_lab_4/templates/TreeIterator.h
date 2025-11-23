@@ -18,14 +18,14 @@ private:
 
 public:
     explicit TreeIterator(Node *start = nullptr, const BinarySearchTree<T> *t = nullptr) : current(start), tree(t) {}
-    TreeIterator &operator++(); // move forward (in-order successor)
+    TreeIterator &operator++();
     TreeIterator operator++(int)
     {
         TreeIterator tmp = *this;
         ++(*this);
         return tmp;
     }
-    TreeIterator &operator--(); // move backward (in-order predecessor)
+    TreeIterator &operator--();
     TreeIterator operator--(int)
     {
         TreeIterator tmp = *this;
