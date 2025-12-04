@@ -4,7 +4,6 @@
 
 #include <sstream>
 
-// default comparator: brand -> model -> year
 template <typename T>
 static int default_compare_clock(const T &a, const T &b)
 {
@@ -36,13 +35,13 @@ static int default_compare_clock(const T &a, const T &b)
 
 template <typename T>
 TreeTemplate<T>::TreeTemplate()
-    : root(nullptr), compare_func(&default_compare_clock<T>)
+    : root(nullptr), compare_func(default_compare_clock<T>)
 {
 }
 
 template <typename T>
-TreeTemplate<T>::TreeTemplate(int (*cmp)(const T &, const T &))
-    : root(nullptr), compare_func(cmp ? cmp : &default_compare_clock<T>)
+TreeTemplate<T>::TreeTemplate(std::function<int(const T &, const T &)> cmp)
+    : root(nullptr), compare_func(cmp ? cmp : default_compare_clock<T>)
 {
 }
 
@@ -59,16 +58,16 @@ Node<T> *TreeTemplate<T>::get_root() const
 }
 
 template <typename T>
-void TreeTemplate<T>::set_compare_func(int (*cmp)(const T &, const T &))
+void TreeTemplate<T>::set_compare_func(std::function<int(const T &, const T &)> cmp)
 {
     if (cmp)
         compare_func = cmp;
     else
-        compare_func = &default_compare_clock<T>;
+        compare_func = default_compare_clock<T>;
 }
 
 template <typename T>
-int (*TreeTemplate<T>::get_compare_func())(const T &, const T &)
+std::function<int(const T &, const T &)> TreeTemplate<T>::get_compare_func() const
 {
     return compare_func;
 }
@@ -96,7 +95,7 @@ Node<T> *TreeTemplate<T>::insert_rec(Node<T> *node, T *data)
     }
 
     int cmp = compare_func(*data, *(node->get_data()));
-    if (cmp == -1)
+    if (cmp < 0)
     {
         Node<T> *leftRes = insert_rec(node->get_left(), data);
         node->set_left(leftRes);
@@ -132,11 +131,11 @@ Node<T> *TreeTemplate<T>::delete_rec(Node<T> *node, const T &key, bool &deleted)
         return nullptr;
 
     int cmp = compare_func(key, *(node->get_data()));
-    if (cmp == -1)
+    if (cmp < 0)
     {
         node->set_left(delete_rec(node->get_left(), key, deleted));
     }
-    else if (cmp == 1)
+    else if (cmp > 0)
     {
         node->set_right(delete_rec(node->get_right(), key, deleted));
     }
@@ -204,7 +203,7 @@ Node<T> *TreeTemplate<T>::search_by_key_rec(Node<T> *node, const T &key) const
     int cmp = compare_func(key, *(node->get_data()));
     if (cmp == 0)
         return node;
-    if (cmp == -1)
+    if (cmp < 0)
         return search_by_key_rec(node->get_left(), key);
     return search_by_key_rec(node->get_right(), key);
 }
@@ -265,4 +264,4 @@ bool TreeTemplate<T>::empty() const
     return root == nullptr;
 }
 
-#endif // TREE_TEMPLATE_TPP
+#endif

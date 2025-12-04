@@ -2,8 +2,6 @@
 #ifndef NODE_H
 #define NODE_H
 
-// Простая декларация шаблонного узла — реализация в Node.tpp
-
 template <typename T>
 struct Node
 {
@@ -27,7 +25,6 @@ struct Node
     Node<T> *get_parent() const;
 };
 
-// подключаем реализацию
 #include "Node.tpp"
 
-#endif // NODE_H
+#endif

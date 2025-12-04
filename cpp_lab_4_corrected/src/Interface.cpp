@@ -4,18 +4,27 @@
 Interface::Interface()
     : active_type(ClockType::NONE)
 {
-    // set default comparators via lambdas that convert to function pointers
-    smart_tree.set_compare_func([](const SmartClock &a, const SmartClock &b) -> int
-                                { return Interface::cmp_by_brand<SmartClock>(a, b); });
-    wall_tree.set_compare_func([](const WallClock &a, const WallClock &b) -> int
-                               { return Interface::cmp_by_brand<WallClock>(a, b); });
-    wrist_tree.set_compare_func([](const WristClock &a, const WristClock &b) -> int
-                                { return Interface::cmp_by_brand<WristClock>(a, b); });
+    smart_tree.set_compare_func(
+        [this](const SmartClock &a, const SmartClock &b) -> int
+        {
+            return this->cmp_by_brand<SmartClock>(a, b);
+        });
+
+    wall_tree.set_compare_func(
+        [this](const WallClock &a, const WallClock &b) -> int
+        {
+            return this->cmp_by_brand<WallClock>(a, b);
+        });
+
+    wrist_tree.set_compare_func(
+        [this](const WristClock &a, const WristClock &b) -> int
+        {
+            return this->cmp_by_brand<WristClock>(a, b);
+        });
 }
 
 Interface::~Interface()
 {
-    // Trees will be cleared by their destructors
 }
 
 void Interface::menu()

@@ -3,8 +3,8 @@
 #define INTERFACE_TPP
 
 #include <sstream>
+#include <functional>
 
-// ---- input helpers ----
 inline void Interface::clearInputBuffer()
 {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -17,7 +17,6 @@ inline std::string Interface::readLineAllowEmpty()
     return s;
 }
 
-// ---- generic comparators ----
 template <typename U>
 int Interface::cmp_by_brand(const U &a, const U &b)
 {
@@ -56,13 +55,15 @@ int Interface::cmp_by_year(const U &a, const U &b)
     return 0;
 }
 
-// ---- configure sorting ----
 template <typename U>
 void Interface::configure_sorting_for_tree(TreeTemplate<U> &tree)
 {
-    std::cout << "Выберите поле для сортировки дерева:\n";
-    std::cout << "1) Brand\n2) Model\n3) Year\nChoice: ";
-    // read simple integer (no exceptions)
+    std::cout << "Sort by:\n"
+              << "1) Brand\n"
+              << "2) Model\n"
+              << "3) Year\n"
+              << "Choice: ";
+
     int ch = 1;
     if (!(std::cin >> ch))
     {
@@ -70,44 +71,38 @@ void Interface::configure_sorting_for_tree(TreeTemplate<U> &tree)
         clearInputBuffer();
         ch = 1;
     }
-    else
-    {
-        clearInputBuffer();
-    }
+    clearInputBuffer();
 
-    // Use captureless lambdas that convert to function pointers
     if (ch == 1)
-    {
-        tree.set_compare_func([](const U &x, const U &y) -> int
-                              { return Interface::cmp_by_brand<U>(x, y); });
-    }
+        tree.set_compare_func([this](const U &x, const U &y)
+                              { return cmp_by_brand<U>(x, y); });
     else if (ch == 2)
-    {
-        tree.set_compare_func([](const U &x, const U &y) -> int
-                              { return Interface::cmp_by_model<U>(x, y); });
-    }
+        tree.set_compare_func([this](const U &x, const U &y)
+                              { return cmp_by_model<U>(x, y); });
     else if (ch == 3)
-    {
-        tree.set_compare_func([](const U &x, const U &y) -> int
-                              { return Interface::cmp_by_year<U>(x, y); });
-    }
+        tree.set_compare_func([this](const U &x, const U &y)
+                              { return cmp_by_year<U>(x, y); });
     else
-    {
-        tree.set_compare_func([](const U &x, const U &y) -> int
-                              { return Interface::cmp_by_brand<U>(x, y); });
-    }
+        tree.set_compare_func([this](const U &x, const U &y)
+                              { return cmp_by_brand<U>(x, y); });
 
-    std::cout << "Comparator set.\n";
+    std::cout << "Comparator updated.\n";
 }
 
-// ---- tree_menu (шаблонная) ----
 template <typename U>
 void Interface::tree_menu(TreeTemplate<U> &tree, const char *type_name)
 {
     while (true)
     {
-        std::cout << "\n--- Working with " << type_name << " tree ---\n";
-        std::cout << "1 - Add element\n2 - Delete element\n3 - Search by fields\n4 - Print tree\n5 - Configure sorting\n6 - Clear tree\n0 - Back\nChoice: ";
+        std::cout << "\n--- " << type_name << " tree menu ---\n"
+                  << "1 - Add element\n"
+                  << "2 - Delete element\n"
+                  << "3 - Search\n"
+                  << "4 - Print tree\n"
+                  << "5 - Configure sorting\n"
+                  << "6 - Clear tree\n"
+                  << "0 - Back\n"
+                  << "Choice: ";
 
         int cmd = -1;
         if (!(std::cin >> cmd))
@@ -124,21 +119,16 @@ void Interface::tree_menu(TreeTemplate<U> &tree, const char *type_name)
         if (cmd == 1)
         {
             U *obj = new U();
-            // operator>> for clocks reads fields; ensure newline handled
-            std::cin.clear();
-            std::cin.sync();
             std::cin >> *obj;
             tree.Insert(obj);
-            std::cout << "Added.\n";
+            std::cout << "Element added.\n";
         }
         else if (cmd == 2)
         {
             U temp;
-            std::cin.clear();
-            std::cin.sync();
             std::cin >> temp;
             bool ok = tree.Delete(temp);
-            std::cout << (ok ? "Deleted element.\n" : "Element not found.\n");
+            std::cout << (ok ? "Deleted.\n" : "Not found.\n");
         }
         else if (cmd == 3)
         {
@@ -168,23 +158,22 @@ void Interface::tree_menu(TreeTemplate<U> &tree, const char *type_name)
     }
 }
 
-// ---- search_by_fields (шаблонная) ----
 template <typename U>
 void Interface::search_by_fields(TreeTemplate<U> &tree)
 {
     if (tree.empty())
     {
-        std::cout << "Tree is empty.\n";
+        std::cout << "Tree empty.\n";
         return;
     }
 
-    std::cout << "Enter Brand to search (press Enter to skip): ";
+    std::cout << "Brand (Enter to skip): ";
     std::string brand_line = readLineAllowEmpty();
 
-    std::cout << "Enter Model to search (press Enter to skip): ";
+    std::cout << "Model (Enter to skip): ";
     std::string model_line = readLineAllowEmpty();
 
-    std::cout << "Enter Year to search (press Enter to skip or 0 to skip): ";
+    std::cout << "Year (Enter to skip, 0 to skip): ";
     std::string year_line = readLineAllowEmpty();
 
     bool use_brand = !brand_line.empty();
@@ -193,65 +182,46 @@ void Interface::search_by_fields(TreeTemplate<U> &tree)
     int year_val = 0;
     if (!year_line.empty())
     {
-        // simple stoi without exceptions handling
         year_val = std::atoi(year_line.c_str());
         if (year_val != 0)
             use_year = true;
     }
 
-    String searchBrand;
-    String searchModel;
+    String sb, sm;
     if (use_brand)
-        searchBrand = String(brand_line.c_str());
+        sb = String(brand_line.c_str());
     if (use_model)
-        searchModel = String(model_line.c_str());
+        sm = String(model_line.c_str());
 
-    // Print header
     U tmp;
     tmp.displayHeader();
     std::cout << "\n";
 
-    // traverse inorder and print matches
-    // implement recursive struct
-    struct Visitor
+    std::function<void(Node<U> *)> visit = [&](Node<U> *node)
     {
-        bool ub, um, uy;
-        String sb, sm;
-        int y;
-        void visit(Node<U> *node)
+        if (!node)
+            return;
+        visit(node->get_left());
+
+        U *obj = node->get_data();
+        if (obj)
         {
-            if (!node)
-                return;
-            if (node->get_left())
-                visit(node->get_left());
-            U *obj = node->get_data();
-            if (obj)
-            {
-                bool match = true;
-                if (ub && !(obj->getBrand() == sb))
-                    match = false;
-                if (um && match && !(obj->getModel() == sm))
-                    match = false;
-                if (uy && match && !(obj->getYear() == y))
-                    match = false;
-                if (match)
-                    std::cout << *obj;
-            }
-            if (node->get_right())
-                visit(node->get_right());
+            bool match = true;
+            if (use_brand && !(obj->getBrand() == sb))
+                match = false;
+            if (use_model && match && !(obj->getModel() == sm))
+                match = false;
+            if (use_year && match && !(obj->getYear() == year_val))
+                match = false;
+            if (match)
+                std::cout << *obj << "\n";
         }
+
+        visit(node->get_right());
     };
 
-    Visitor vis;
-    vis.ub = use_brand;
-    vis.um = use_model;
-    vis.uy = use_year;
-    vis.sb = searchBrand;
-    vis.sm = searchModel;
-    vis.y = year_val;
-
-    vis.visit(tree.get_root());
+    visit(tree.get_root());
     std::cout << "\n";
 }
 
-#endif // INTERFACE_TPP
+#endif

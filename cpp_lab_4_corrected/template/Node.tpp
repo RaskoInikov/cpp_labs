@@ -23,7 +23,6 @@ Node<T>::Node(T *d, Node<T> *l, Node<T> *r, Node<T> *p)
 template <typename T>
 Node<T>::~Node()
 {
-    // Node не удаляет data — это делает TreeTemplate::clear()
     data = nullptr;
     left = nullptr;
     right = nullptr;
@@ -82,4 +81,4 @@ Node<T> *Node<T>::get_parent() const
     return parent;
 }
 
-#endif // NODE_TPP
+#endif
