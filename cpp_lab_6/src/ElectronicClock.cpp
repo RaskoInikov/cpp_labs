@@ -1,0 +1,102 @@
+#include "../headers/ElectronicClock.h"
+#include "../utils/string_utils.h"
+#include <iostream>
+#include <iomanip>
+#include "../utils/error_utils.h"
+#include <regex>
+
+ElectronicClock::ElectronicClock() : Clock(), batteryLife(0) {}
+ElectronicClock::ElectronicClock(const String &brand, const String &model, int year, int batteryLife)
+    : Clock(brand, model, year), batteryLife(batteryLife) {}
+ElectronicClock::ElectronicClock(const ElectronicClock &other) { *this = other; }
+
+ElectronicClock &ElectronicClock::operator=(const ElectronicClock &other)
+{
+    if (this == &other)
+        return *this;
+    Clock::operator=(other);
+    batteryLife = other.batteryLife;
+    return *this;
+}
+
+int ElectronicClock::getBatteryLife() const { return batteryLife; }
+void ElectronicClock::setBatteryLife(int hours) { batteryLife = hours; }
+
+void ElectronicClock::displayHeader() const
+{
+    Clock::displayHeader();
+    std::cout << std::left
+              << std::setw(15) << "Battery Life";
+}
+
+std::ostream &operator<<(std::ostream &os, const ElectronicClock &ec)
+{
+    os << static_cast<const Clock &>(ec);
+    os << std::left
+       << std::setw(15) << ec.getBatteryLife();
+    return os;
+}
+
+std::istream &operator>>(std::istream &is, ElectronicClock &ec)
+{
+    is >> static_cast<Clock &>(ec);
+
+    std::cout << "Enter battery life (hours): ";
+    ec.batteryLife = checkNumber(is, 1, 10000);
+
+    return is;
+}
+
+void ElectronicClock::edit()
+{
+    Clock::edit();
+    int choice = -1;
+    while (choice != 0)
+    {
+        std::cout << "\n--- ElectronicClock Edit ---\n1. Change Battery Life\n0. Next" << std::endl;
+        handleUserInput(choice);
+
+        int val;
+        switch (choice)
+        {
+        case 1:
+            std::cout << "Enter new battery life (hours): ";
+            std::cin >> val;
+            setBatteryLife(val);
+            break;
+        case 0:
+            return;
+        default:
+            std::cout << "Invalid choice." << std::endl;
+        }
+    }
+}
+
+void ElectronicClock::writeText(std::ostream &os) const
+{
+    Clock::writeText(os);
+    os << std::setw(15) << batteryLife;
+}
+
+void ElectronicClock::readText(std::istream &is)
+{
+    Clock::readText(is);
+    is >> batteryLife;
+}
+
+void ElectronicClock::writeBinary(std::ostream &os) const
+{
+    Clock::writeBinary(os);
+    os.write(reinterpret_cast<const char *>(&batteryLife), sizeof(batteryLife));
+}
+
+bool ElectronicClock::readBinary(std::istream &is)
+{
+    if (!Clock::readBinary(is))
+        return false;
+
+    if (!is.read(reinterpret_cast<char *>(&batteryLife), sizeof(batteryLife)))
+        return false;
+
+    return true;
+}
