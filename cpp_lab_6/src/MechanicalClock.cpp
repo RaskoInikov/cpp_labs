@@ -87,7 +87,10 @@ void MechanicalClock::readText(std::istream &is)
 void MechanicalClock::writeBinary(std::ostream &os) const
 {
     Clock::writeBinary(os);
-    os.write(reinterpret_cast<const char *>(&windingInterval), sizeof(windingInterval));
+
+    char buf[sizeof(windingInterval)];
+    std::memcpy(buf, &windingInterval, sizeof(windingInterval));
+    os.write(buf, sizeof(windingInterval));
 }
 
 bool MechanicalClock::readBinary(std::istream &is)
@@ -95,8 +98,10 @@ bool MechanicalClock::readBinary(std::istream &is)
     if (!Clock::readBinary(is))
         return false;
 
-    if (!is.read(reinterpret_cast<char *>(&windingInterval), sizeof(windingInterval)))
+    char buf[sizeof(windingInterval)];
+    if (!is.read(buf, sizeof(windingInterval)))
         return false;
+    std::memcpy(&windingInterval, buf, sizeof(windingInterval));
 
     return true;
 }

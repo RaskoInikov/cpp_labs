@@ -87,7 +87,10 @@ void WristClock::readText(std::istream &is)
 void WristClock::writeBinary(std::ostream &os) const
 {
     MechanicalClock::writeBinary(os);
-    os.write(reinterpret_cast<const char *>(&strapLength), sizeof(strapLength));
+
+    char buf[sizeof(strapLength)];
+    std::memcpy(buf, &strapLength, sizeof(strapLength));
+    os.write(buf, sizeof(strapLength));
 }
 
 bool WristClock::readBinary(std::istream &is)
@@ -95,8 +98,10 @@ bool WristClock::readBinary(std::istream &is)
     if (!MechanicalClock::readBinary(is))
         return false;
 
-    if (!is.read(reinterpret_cast<char *>(&strapLength), sizeof(strapLength)))
+    char buf[sizeof(strapLength)];
+    if (!is.read(buf, sizeof(strapLength)))
         return false;
+    std::memcpy(&strapLength, buf, sizeof(strapLength));
 
     return true;
 }

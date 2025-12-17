@@ -87,7 +87,10 @@ void ElectronicClock::readText(std::istream &is)
 void ElectronicClock::writeBinary(std::ostream &os) const
 {
     Clock::writeBinary(os);
-    os.write(reinterpret_cast<const char *>(&batteryLife), sizeof(batteryLife));
+
+    char buf[sizeof(batteryLife)];
+    std::memcpy(buf, &batteryLife, sizeof(batteryLife));
+    os.write(buf, sizeof(batteryLife));
 }
 
 bool ElectronicClock::readBinary(std::istream &is)
@@ -95,8 +98,10 @@ bool ElectronicClock::readBinary(std::istream &is)
     if (!Clock::readBinary(is))
         return false;
 
-    if (!is.read(reinterpret_cast<char *>(&batteryLife), sizeof(batteryLife)))
+    char buf[sizeof(batteryLife)];
+    if (!is.read(buf, sizeof(batteryLife)))
         return false;
+    std::memcpy(&batteryLife, buf, sizeof(batteryLife));
 
     return true;
 }

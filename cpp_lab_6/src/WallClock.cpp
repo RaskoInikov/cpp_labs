@@ -87,7 +87,10 @@ void WallClock::readText(std::istream &is)
 void WallClock::writeBinary(std::ostream &os) const
 {
     MechanicalClock::writeBinary(os);
-    os.write(reinterpret_cast<const char *>(&diameter), sizeof(diameter));
+
+    char buf[sizeof(diameter)];
+    std::memcpy(buf, &diameter, sizeof(diameter));
+    os.write(buf, sizeof(diameter));
 }
 
 bool WallClock::readBinary(std::istream &is)
@@ -95,8 +98,10 @@ bool WallClock::readBinary(std::istream &is)
     if (!MechanicalClock::readBinary(is))
         return false;
 
-    if (!is.read(reinterpret_cast<char *>(&diameter), sizeof(diameter)))
+    char buf[sizeof(diameter)];
+    if (!is.read(buf, sizeof(diameter)))
         return false;
+    std::memcpy(&diameter, buf, sizeof(diameter));
 
     return true;
 }

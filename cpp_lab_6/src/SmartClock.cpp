@@ -93,7 +93,9 @@ void SmartClock::writeBinary(std::ostream &os) const
     ElectronicClock::writeBinary(os);
 
     size_t len = std::strlen(osVersion.c_str());
-    os.write(reinterpret_cast<const char *>(&len), sizeof(len));
+    char buf[sizeof(size_t)];
+    std::memcpy(buf, &len, sizeof(len));
+    os.write(buf, sizeof(len));
     os.write(osVersion.c_str(), len);
 }
 
@@ -103,17 +105,18 @@ bool SmartClock::readBinary(std::istream &is)
         return false;
 
     size_t len;
-    char buffer[256];
+    char buf[256];
 
-    if (!is.read(reinterpret_cast<char *>(&len), sizeof(len)))
+    if (!is.read(buf, sizeof(size_t)))
         return false;
-    if (len >= sizeof(buffer))
+    std::memcpy(&len, buf, sizeof(size_t));
+    if (len >= sizeof(buf))
         return false;
-    if (!is.read(buffer, len))
+    if (!is.read(buf, len))
         return false;
 
-    buffer[len] = '\0';
-    osVersion = String(buffer);
+    buf[len] = '\0';
+    osVersion = String(buf);
 
     return true;
 }

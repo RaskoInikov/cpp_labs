@@ -127,46 +127,56 @@ void Clock::readText(std::istream &is)
 void Clock::writeBinary(std::ostream &os) const
 {
     size_t len;
+    char buf[sizeof(size_t)];
 
+    // brand
     len = std::strlen(brand.c_str());
-    os.write(reinterpret_cast<const char *>(&len), sizeof(len));
+    std::memcpy(buf, &len, sizeof(len));
+    os.write(buf, sizeof(len));
     os.write(brand.c_str(), len);
 
+    // model
     len = std::strlen(model.c_str());
-    os.write(reinterpret_cast<const char *>(&len), sizeof(len));
+    std::memcpy(buf, &len, sizeof(len));
+    os.write(buf, sizeof(len));
     os.write(model.c_str(), len);
 
-    os.write(reinterpret_cast<const char *>(&year), sizeof(year));
+    // year
+    std::memcpy(buf, &year, sizeof(year));
+    os.write(buf, sizeof(year));
 }
 
 bool Clock::readBinary(std::istream &is)
 {
     size_t len;
-    char buffer[256];
+    char buf[256];
 
     // brand
-    if (!is.read(reinterpret_cast<char *>(&len), sizeof(len)))
+    if (!is.read(buf, sizeof(size_t)))
         return false;
-    if (len >= sizeof(buffer))
+    std::memcpy(&len, buf, sizeof(size_t));
+    if (len >= sizeof(buf))
         return false;
-    if (!is.read(buffer, len))
+    if (!is.read(buf, len))
         return false;
-    buffer[len] = '\0';
-    brand = String(buffer);
+    buf[len] = '\0';
+    brand = String(buf);
 
     // model
-    if (!is.read(reinterpret_cast<char *>(&len), sizeof(len)))
+    if (!is.read(buf, sizeof(size_t)))
         return false;
-    if (len >= sizeof(buffer))
+    std::memcpy(&len, buf, sizeof(size_t));
+    if (len >= sizeof(buf))
         return false;
-    if (!is.read(buffer, len))
+    if (!is.read(buf, len))
         return false;
-    buffer[len] = '\0';
-    model = String(buffer);
+    buf[len] = '\0';
+    model = String(buf);
 
     // year
-    if (!is.read(reinterpret_cast<char *>(&year), sizeof(year)))
+    if (!is.read(buf, sizeof(year)))
         return false;
+    std::memcpy(&year, buf, sizeof(year));
 
     return true;
 }
